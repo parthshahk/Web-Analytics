@@ -71,6 +71,7 @@ app.post("/login", (req, res) => {
         if(user){
             if(bcrypt.compareSync(req.body.password, user.password)){
                 req.session.auth = true;
+                req.session.user = user.email;
                 res.redirect("/dashboard");
             }else{
                 res.redirect('/#incorrectPassword');
@@ -87,6 +88,33 @@ app.get("/logout", (req, res) => {
         req.session.auth = false;
     }
     res.redirect("/#logout");
+});
+
+// Dashboard
+app.get("/dashboard", (req, res) => {
+    if(req.session.auth == true){
+        res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
+    }else{
+        res.redirect("/");
+    }
+});
+
+// Assets
+app.get("/assets", (req, res) => {
+    if(req.session.auth == true){
+        res.sendFile(path.join(__dirname, 'public', 'assets.html'));
+    }else{
+        res.redirect("/");
+    }
+});
+
+// Installation
+app.get("/installation", (req, res) => {
+    if(req.session.auth == true){
+        res.sendFile(path.join(__dirname, 'public', 'installation.html'));
+    }else{
+        res.redirect("/");
+    }
 });
 
 // Initialize Server
