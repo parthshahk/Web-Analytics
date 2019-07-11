@@ -11,6 +11,14 @@
                 margin-left: 20px;
                 font-family: 'Pacifico';
             }
+            .input-field input:focus + label {
+                color: #b71c1c  !important;
+            }
+
+            .input-field input:focus {
+                border-bottom: 1px solid #b71c1c  !important;
+                box-shadow: 0 1px 0 0 #b71c1c  !important;
+            }
         </style>
     </head>
     <body>
@@ -25,6 +33,55 @@
                 </ul>
             </div>
         </nav>
+        <div class="container">
+
+            <div class="row"></div>
+            <div class="row"></div>
+            <div class="row"></div>
+            <div class="row"></div>
+
+            <div class="row">
+
+                <form action="/addAsset" method="POST">
+
+                    <div class="col s5 offset-s2 input-field">
+                        <input type="text" name="asset" placeholder="Asset Name">
+                        <label for="asset">New Asset</label>
+                    </div>
+
+                    <div class="col s5">
+                        <button class="btn-large waves-effect waves-light red darken-3">Add</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="row">
+                <div class="col s6 offset-s3">
+                    <table class="striped centered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="assetContent"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
         <script type="text/javascript" src="./js/materialize.min.js"></script>
+        <script>
+            fetch('/getAssets')
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(myJson) {
+                    var string = '';
+                    myJson.forEach(x => {
+                        string += `<tr><td>${x.name}</td></tr>`;
+                    });
+                    document.getElementById("assetContent").innerHTML = string;
+                });
+        </script>
     </body>
 </html>
