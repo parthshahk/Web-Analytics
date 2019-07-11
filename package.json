@@ -1,0 +1,28 @@
+{
+  "name": "web-analytics",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/parthshahk/Web-Analytics.git"
+  },
+  "author": "Parth Shah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/parthshahk/Web-Analytics/issues"
+  },
+  "homepage": "https://github.com/parthshahk/Web-Analytics#readme",
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.6.4"
+  }
+}
