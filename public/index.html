@@ -45,12 +45,12 @@
                         <div class="row">
 
                             <div class="col s6 offset-s4 input-field">
-                                <input placeholder="Email" id="email" name="email" type="email" required>
+                                <input placeholder="Email" name="email" type="email" required>
                                 <label for="email">Email</label>
                             </div>
 
                             <div class="col s6 offset-s4 input-field">
-                                <input placeholder="Password" id="password" name="password" type="password" required>
+                                <input placeholder="Password" name="password" type="password" required autocomplete="true">
                                 <label for="password">Password</label>
                             </div>
                             
@@ -70,18 +70,18 @@
                         <div class="row">
 
                             <div class="col s6 offset-s2 input-field">
-                                <input placeholder="Name" id="name" name="name" type="text" required>
+                                <input placeholder="Name" name="name" type="text" required>
                                 <label for="email">Name</label>
                             </div>
 
                             <div class="col s6 offset-s2 input-field">
-                                <input placeholder="Email" id="email" name="email" type="email" required>
+                                <input placeholder="Email" name="email" type="email" required>
                                 <label for="email">Email</label>
                             </div>
 
                             <div class="col s6 offset-s2 input-field">
-                                <input placeholder="Password" id="password" name="password" type="password" required>
-                                <label for="email">Email</label>
+                                <input placeholder="Password" name="password" type="password" required autocomplete="true">
+                                <label for="password">Password</label>
                             </div>
 
                             <div class="col s6 offset-s2">
@@ -98,5 +98,24 @@
         </div>
 
         <script type="text/javascript" src="./js/materialize.min.js"></script>
+        <script>
+            switch(window.location.hash){
+                case "#logout": 
+                    M.toast({html: 'Logout Successfully'})
+                    break;
+
+                case "#userExists":
+                    M.toast({html: 'User Already Exists'})
+                    break;
+
+                case "#incorrectPassword":
+                    M.toast({html: 'Incorrect Password'})
+                    break;
+
+                case "#userDoesNotExist":
+                    M.toast({html: 'User Does Not Exist'})
+                    break;
+            }
+        </script>
     </body>
 </html>
