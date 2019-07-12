@@ -19,6 +19,7 @@ app.use(expressSession({
     resave: false,
     saveUninitialized: false
 }));
+const http = require('http').Server(app);
 
 // Initialize Database
 mongoose.connect('mongodb://localhost/wanalytics', {useNewUrlParser: true});
@@ -144,8 +145,18 @@ app.get('/getAssets', (req, res) => {
     }
 });
 
+// Anaytics
+app.get('/analytics.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client' ,'analytics.js'));
+});
+
+// Socket io File
+app.get('/socket.io.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'socket.io.js'));
+});
+
 // Initialize Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+http.listen(PORT, () => {
     console.log("Server Running");
 });
