@@ -149,6 +149,11 @@ app.get('/analytics.js', (req, res) => {
     res.sendFile(path.join(__dirname, 'client' ,'analytics.js'));
 });
 
+// Client JS
+app.get('/client.min.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client' ,'client.min.js'));
+});
+
 // Initialize Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
