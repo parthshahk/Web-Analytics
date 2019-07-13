@@ -6,9 +6,11 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const expressSession = require('express-session');
 const randomstring = require("randomstring");
+const cors = require('cors')
 
 // Models
 const User = require('./models/User');
+const Report = require('./models/Report');
 
 // Initialize App
 const app = express();
@@ -19,6 +21,7 @@ app.use(expressSession({
     resave: false,
     saveUninitialized: false
 }));
+app.use(cors());
 
 // Initialize Database
 mongoose.connect('mongodb://localhost/wanalytics', {useNewUrlParser: true});
@@ -152,6 +155,24 @@ app.get('/analytics.js', (req, res) => {
 // Client JS
 app.get('/client.min.js', (req, res) => {
     res.sendFile(path.join(__dirname, 'client' ,'client.min.js'));
+});
+
+app.post('/collectStatic', cors(), (req, res, next) => {
+    
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+'T'+time;
+
+    let report = new Report();
+    report.assetId = req.body.asset;
+    report.date = dateTime;
+    report.user = req.body.data;
+    report.instanceCookie = req.body.cookie;
+
+    report.save();
+
+    res.end();
 });
 
 // Initialize Server
