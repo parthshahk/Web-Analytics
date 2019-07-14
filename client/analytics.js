@@ -113,11 +113,28 @@ inView('.track')
 inView.offset(400);
 
 setInterval(() => {
-    fetch('http://localhost:5000/collectActivity', {
+    fetch('http://localhost:5000/collectElements', {
         method: 'post',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({data: activity, cookie: cookie, asset: anid})
     });
-}, 3000);
+}, 6000);
+
+setTimeout(() => {
+    
+    var location = {
+        href: window.location.href,
+        path: window.location.pathname
+    }
+
+    fetch('http://localhost:5000/collectVisits', {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({cookie: cookie, asset: anid, location: location})
+    });
+
+}, 8000);

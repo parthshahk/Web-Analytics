@@ -181,10 +181,44 @@ app.post('/collectStatic', cors(), (req, res, next) => {
     res.end();
 });
 
-//Collect Activity
-app.post('/collectActivity', cors(), (req, res, next) => {
+//Collect Elements
+app.post('/collectElements', cors(), (req, res, next) => {
+    Report.updateOne(
+        {
+            assetId: req.body.asset,
+            instanceCookie: req.body.cookie
+        },
+        {
+            $push: {
+                elements: req.body.data.currentElement
+            }
+        }, () => {}
+    );
+    res.end();
+});
 
-    Report.updateOne({assetId: req.body.asset, instanceCookie: req.body.cookie}, {$push: {activity: req.body.data.currentElement}}, () => {});
+// Collect Visits
+app.post('/collectVisits', cors(), (req, res, next) => {
+
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+'T'+time;
+
+    Report.updateOne(
+        {
+            assetId: req.body.asset,
+            instanceCookie: req.body.cookie
+        },
+        {
+            $push: {
+                visits: {
+                    date: dateTime,
+                    location: req.body.location
+                }
+            }
+        }, () => {}
+    );
     res.end();
 });
 

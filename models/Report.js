@@ -10,11 +10,14 @@ const reportSchema = mongoose.Schema({
     user: {
         type: Object
     },
-    activity: {
-        type: Array     // Array of activities of each visit
+    elements: {
+        type: Array
     },
     instanceCookie: {
         type: String
+    },
+    visits: {
+        type: Array
     }
 });
 
