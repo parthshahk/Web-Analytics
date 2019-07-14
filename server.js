@@ -157,6 +157,12 @@ app.get('/client.min.js', (req, res) => {
     res.sendFile(path.join(__dirname, 'client' ,'client.min.js'));
 });
 
+// In-View JS
+app.get('/in-view.min.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client' ,'in-view.min.js'));
+});
+
+// Collect Static Data
 app.post('/collectStatic', cors(), (req, res, next) => {
     
     var today = new Date();
@@ -172,6 +178,13 @@ app.post('/collectStatic', cors(), (req, res, next) => {
 
     report.save();
 
+    res.end();
+});
+
+//Collect Activity
+app.post('/collectActivity', cors(), (req, res, next) => {
+
+    Report.updateOne({assetId: req.body.asset, instanceCookie: req.body.cookie}, {$push: {activity: req.body.data.currentElement}}, () => {});
     res.end();
 });
 

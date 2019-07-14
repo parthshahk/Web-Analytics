@@ -64,6 +64,8 @@ if(!getCookie("wa")){
                 
         });
     }
+}else{
+    cookie = getCookie("wa");
 }
 
 function setCookie(cname, cvalue, exdays) {
@@ -97,4 +99,25 @@ function makeid(length) {
        result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
- }
+}
+
+var activity = {
+    currentElement: null
+};
+
+inView('.track')
+    .on('enter', (el) => {
+        activity.currentElement = el.id;
+    })
+    .on('exit', el => {});
+inView.offset(400);
+
+setInterval(() => {
+    fetch('http://localhost:5000/collectActivity', {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({data: activity, cookie: cookie, asset: anid})
+    });
+}, 3000);
