@@ -129,12 +129,14 @@ setTimeout(() => {
         path: window.location.pathname
     }
 
+    var referrer = document.referrer;
+
     fetch('http://localhost:5000/collectVisits', {
         method: 'post',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({cookie: cookie, asset: anid, location: location})
+        body: JSON.stringify({cookie: cookie, asset: anid, location: location, referrer: referrer})
     });
 
 }, 8000);

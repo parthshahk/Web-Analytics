@@ -214,7 +214,8 @@ app.post('/collectVisits', cors(), (req, res, next) => {
             $push: {
                 visits: {
                     date: dateTime,
-                    location: req.body.location
+                    location: req.body.location,
+                    referrer: req.body.referrer
                 }
             }
         }, () => {}
