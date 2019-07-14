@@ -5,27 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link type="text/css" rel="stylesheet" href="./css/materialize.min.css"  media="screen,projection"/>
+        <link rel="stylesheet" href="./css/style.css">
         <title>Web Analytics</title>
-        <style>
-            .input-field input:focus + label {
-                color: #558b2f !important;
-            }
-
-            .input-field input:focus {
-                border-bottom: 1px solid #558b2f !important;
-                box-shadow: 0 1px 0 0 #558b2f !important;
-            }
-
-            #loginForm {
-                margin-top: 40px;
-                border-right: 1px dotted #33691e;
-            }
-
-            .brand-logo{
-                margin-left: 20px;
-                font-family: 'Pacifico';
-            }
-        </style>
     </head>
     <body>
         
@@ -105,24 +86,6 @@
         </div>
 
         <script type="text/javascript" src="./js/materialize.min.js"></script>
-        <script>
-            switch(window.location.hash){
-                case "#logout": 
-                    M.toast({html: 'Logout Successfully'})
-                    break;
-
-                case "#userExists":
-                    M.toast({html: 'User Already Exists'})
-                    break;
-
-                case "#incorrectPassword":
-                    M.toast({html: 'Incorrect Password'})
-                    break;
-
-                case "#userDoesNotExist":
-                    M.toast({html: 'User Does Not Exist'})
-                    break;
-            }
-        </script>
+        <script src="./js/index.js"></script>
     </body>
 </html>

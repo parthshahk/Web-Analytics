@@ -1,0 +1,17 @@
+.brand-logo{
+    margin-left: 20px;
+    font-family: 'Pacifico';
+}
+.input-field input:focus + label {
+    color: #558b2f !important;
+}
+
+.input-field input:focus {
+    border-bottom: 1px solid #558b2f !important;
+    box-shadow: 0 1px 0 0 #558b2f !important;
+}
+
+#loginForm {
+    margin-top: 40px;
+    border-right: 1px dotted #33691e;
+}
