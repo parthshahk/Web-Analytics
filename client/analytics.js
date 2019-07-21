@@ -1,4 +1,6 @@
 var cookie;
+// var baseAddress = 'http://localhost:5000';
+var baseAddress = 'http://analytics52.herokuapp.com';
 
 if(!getCookie("wa")){
 
@@ -54,7 +56,7 @@ if(!getCookie("wa")){
         .then(function(myJson) {
             userData.geolocation.address = myJson.address;
                 
-            fetch('http://localhost:5000/collectStatic', {
+            fetch(`${baseAddress}/collectStatic`, {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
@@ -113,7 +115,7 @@ inView('.track')
 inView.offset(400);
 
 setInterval(() => {
-    fetch('http://localhost:5000/collectElements', {
+    fetch(`${baseAddress}/collectElements`, {
         method: 'post',
         headers: {
             'Content-Type': 'application/json',
@@ -131,7 +133,7 @@ setTimeout(() => {
 
     var referrer = document.referrer;
 
-    fetch('http://localhost:5000/collectVisits', {
+    fetch(`${baseAddress}/collectVisits`, {
         method: 'post',
         headers: {
             'Content-Type': 'application/json',

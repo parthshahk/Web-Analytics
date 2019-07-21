@@ -24,7 +24,8 @@ app.use(expressSession({
 app.use(cors());
 
 // Initialize Database
-mongoose.connect('mongodb://localhost/wanalytics', {useNewUrlParser: true});
+// mongoose.connect('mongodb://localhost/wanalytics', {useNewUrlParser: true});
+mongoose.connect('mongodb://heroku_vbvk7167:li3ls609n5ambcn2slm288d2vs@ds353457.mlab.com:53457/heroku_vbvk7167', {useNewUrlParser: true});
 let db = mongoose.connection;
 db.once('open', () => console.log("Database Connected"));
 db.on('error', err => console.log(err));
