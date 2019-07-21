@@ -1,4 +1,5 @@
-var website = "http://localhost:5000";
+var website = "http://analytics52.herokuapp.com";
+// var website = "http://localhost:5000";
 
             fetch('/getAssets')
                 .then(function(response) {
