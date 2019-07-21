@@ -1,6 +1,6 @@
 var cookie;
-var baseAddress = 'http://localhost:5000';
-// var baseAddress = 'http://analytics52.herokuapp.com';
+// var baseAddress = 'http://localhost:5000';
+var baseAddress = 'http://analytics52.herokuapp.com';
 
 if(!getCookie("wa")){
 
@@ -31,41 +31,20 @@ if(!getCookie("wa")){
             path: window.location.pathname
         },
         referrer: document.referrer,
-        history_length: history.length,
-        geolocation: {
-            latitude: null,
-            longitude: null,
-            address: null
-        },
+        history_length: history.length
     }
 
-    navigator.geolocation.getCurrentPosition(success, failure, options);
-    function failure(){}
-    var options = {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0
-    };
-    function success(position){
-        userData.geolocation.latitude = position.coords.latitude;
-        userData.geolocation.longitude = position.coords.longitude;
-        fetch("https://us1.locationiq.com/v1/reverse.php?key=a308c42ebe7da5&lat="+userData.geolocation.latitude+"&lon="+userData.geolocation.longitude+"&format=json")
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(myJson) {
-            userData.geolocation.address = myJson.address;
-                
-            fetch(`${baseAddress}/collectStatic`, {
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({data: userData, cookie: cookie, asset: anid})
-            });
-                
-        });
-    }
+            
+    fetch(`${baseAddress}/collectStatic`, {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({data: userData, cookie: cookie, asset: anid})
+    });
+    
+
+
 }else{
     cookie = getCookie("wa");
 }
@@ -112,7 +91,7 @@ inView('.track')
         activity.currentElement = el.id;
     })
     .on('exit', el => {});
-inView.offset(400);
+    inView.threshold(0.5);  // Atleast half of the element should be in the viewport
 
 setInterval(() => {
     fetch(`${baseAddress}/collectElements`, {
