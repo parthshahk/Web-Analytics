@@ -1,6 +1,6 @@
 var cookie;
-// var baseAddress = 'http://localhost:5000';
-var baseAddress = 'http://analytics52.herokuapp.com';
+var baseAddress = 'http://localhost:5000';
+// var baseAddress = 'http://analytics52.herokuapp.com';
 
 if(!getCookie("wa")){
 
