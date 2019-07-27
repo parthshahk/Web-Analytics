@@ -22,7 +22,7 @@ app.use(expressSession({
 app.use(cors());
 
 // Initialize Database
-mongoose.connect(config.mlab_db, {useNewUrlParser: true});
+mongoose.connect(config.local_db, {useNewUrlParser: true});
 let db = mongoose.connection;
 db.once('open', () => console.log("Database Connected"));
 db.on('error', err => console.log(err));
