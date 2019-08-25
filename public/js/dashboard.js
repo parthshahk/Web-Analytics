@@ -11,7 +11,6 @@ new Vue({
         resolution: "",
         colors: [
             '#08415C',
-            '#858F98',
             '#DB504A',
             '#FFD166',
             '#8B5A8C',
@@ -20,7 +19,8 @@ new Vue({
             '#26303D',
             '#23AD7B',
             '#65A603',
-            '#F40080'
+            '#F40080',
+            '#858F98'
         ]
     },
 
@@ -94,7 +94,7 @@ new Vue({
                     var months = []
                     data.forEach(element =>{
                         months.push(monthFull[parseInt(element.Month)-1])
-                        percent.push(element.Percentage)
+                        percent.push(element.Count)
                     })
 
                     var ctx = document.getElementById('time_month');
@@ -120,7 +120,7 @@ new Vue({
                     var days = []
                     data.forEach(element =>{
                         days.push(element.Day)
-                        percent.push(element.Percentage)
+                        percent.push(element.Count)
                     })
 
                     var ctx = document.getElementById('time_week');
@@ -145,7 +145,7 @@ new Vue({
                     var days = []
                     data.forEach(element =>{
                         days.push(element.Time)
-                        percent.push(element.Percentage)
+                        percent.push(element.Count)
                     })
                     var ctx = document.getElementById('time_day');
                     var myChart = new Chart(ctx, {
@@ -221,12 +221,114 @@ new Vue({
                     for(var i=0; i<6; i++){
                         self.resolution += `<tr>
                             <td>${data[i].Resolution}</td>
-                            <td>${data[i].Percentage}</td>
+                            <td>${data[i].Percentage}%</td>
                         </tr>`
                     }
                 })
 
 
+                axios.get(`http://localhost:8000/v1/data/os?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
+                .then(function(response){
+                    var data = JSON.parse(response.data)
+                    
+                    var percent = []
+                    var os = []
+                    data.forEach(element =>{
+                        os.push(element.OS)
+                        percent.push(element.Percentage)
+                    })
+                    var ctx = document.getElementById('os');
+                    var myChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: os,
+                            datasets: [{
+                                label: 'OS',
+                                data: percent,
+                                backgroundColor: self.colors,
+                                borderWidth: 1
+                            }]
+                        }
+                    });
+
+                })
+
+                axios.get(`http://localhost:8000/v1/data/mobile?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
+                .then(function(response){
+                    var data = JSON.parse(response.data)
+                    
+                    var percent = []
+                    var mobile = []
+                    data.forEach(element =>{
+                        mobile.push(element.User)
+                        percent.push(element.Percentage)
+                    })
+                    var ctx = document.getElementById('mobile');
+                    var myChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: mobile,
+                            datasets: [{
+                                label: 'Device Type',
+                                data: percent,
+                                backgroundColor: self.colors,
+                                borderWidth: 1
+                            }]
+                        }
+                    });
+
+                })
+
+
+                axios.get(`http://localhost:8000/v1/data/time_zone?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
+                    .then(function(response){
+                        var data = JSON.parse(response.data)
+                        
+                        var percent = []
+                        var tz = []
+                        data.forEach(element =>{
+                            tz.push(element.TimeZone)
+                            percent.push(element.Percentage)
+                        })
+                        var ctx = document.getElementById('time_zone');
+                        var myChart = new Chart(ctx, {
+                            type: 'pie',
+                            data: {
+                                labels: tz,
+                                datasets: [{
+                                    label: 'Time Zone',
+                                    data: percent,
+                                    backgroundColor: self.colors,
+                                    borderWidth: 1
+                                }]
+                            }
+                        });                        
+                    })
+
+                axios.get(`http://localhost:8000/v1/data/language?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
+                    .then(function(response){
+                        var data = JSON.parse(response.data)
+                        
+                        var percent = []
+                        var language = []
+                        data.forEach(element =>{
+                            language.push(element.Language)
+                            percent.push(element.Percentage)
+                        })
+                        var ctx = document.getElementById('language');
+                        var myChart = new Chart(ctx, {
+                            type: 'pie',
+                            data: {
+                                labels: language,
+                                datasets: [{
+                                    label: 'Language',
+                                    data: percent,
+                                    backgroundColor: self.colors,
+                                    borderWidth: 1
+                                }]
+                            }
+                        });                        
+                    })
 
 
 

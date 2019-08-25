@@ -120,8 +120,8 @@ def time_month(date_start, date_end, asset_id):
 		count = df_day['Count'].value_counts()
 		count = count.to_frame().reset_index()
 		count['percentage'] = round(((count['Count']/count['Count'].sum())*100),2)
-		count = count.drop(columns="Count")
-		count.columns = ['Month','Percentage']
+		# count = count.drop(columns="Count")
+		count.columns = ['Month', 'Count', 'Percentage']
 		return count.to_json(orient='records')
 		
 	else:
@@ -158,8 +158,8 @@ def time_week(date_start, date_end, asset_id):
 		count = df_day['Count'].value_counts()
 		count = count.to_frame().reset_index()
 		count['percentage'] = round(((count['Count']/count['Count'].sum())*100),2)
-		count = count.drop(columns="Count")
-		count.columns = ['Day','Percentage']
+		# count = count.drop(columns="Count")
+		count.columns = ['Day', 'Count', 'Percentage']
 		return count.to_json(orient='records')
 		
 	else:
@@ -211,8 +211,8 @@ def time_day(date_start, date_end, asset_id):
 		df_slot
 
 		df_slot['Percentage'] = round(((df_slot['Count']/count)*100),2)
-		df_slot = df_slot.drop(columns="Count")
-		df_slot.columns = ['Time','Percentage']
+		# df_slot = df_slot.drop(columns="Count")
+		df_slot.columns = ['Time', 'Count', 'Percentage']
 		return df_slot.to_json(orient='records')
 		
 	else:
@@ -356,18 +356,78 @@ def resolution(date_start,date_end,asset_id):
 		return "No Data"
 
 
+# OS
+@hug.get('/data/os', versions=1)
+def os(date_start,date_end,asset_id):		
+		
+	date_start = parser.parse(date_start,dayfirst=True)
+	date_start = date_start.isoformat().replace("-0", "-")
+	date_end = parser.parse(date_end,dayfirst=True)
+	date_end = date_end.isoformat().replace("-0", "-")
+	
+	data = db.reports
+	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
+	lists = list(lists)
+	
+	if(len(lists)!=0):
+		
+		df = pd.DataFrame(lists) 
+		
+		data_os = []
+		for i in range(0,len(df.user)):
+			if 'os' in df.user[i]:
+				data_os.append(df.user[i]['os'])
+
+		df_os = pd.DataFrame(data_os,columns=["Count"])
+		count = df_os['Count'].value_counts()
+		count = count.to_frame().reset_index()
+		count['percentage'] = round(((count['Count']/count['Count'].sum())*100),2)
+		count = count.drop(columns="Count")
+		count.columns = ['OS','Percentage']
+		return count.to_json(orient = "records")
+	else:
+		return "No Data"
 
 
+# Mobile
+@hug.get('/data/mobile', versions=1)
+def mobile(date_start,date_end,asset_id):
+		
+		
+	date_start = parser.parse(date_start,dayfirst=True)
+	date_start = date_start.isoformat().replace("-0", "-")
+	date_end = parser.parse(date_end,dayfirst=True)
+	date_end = date_end.isoformat().replace("-0", "-")
+	
+	data = db.reports
+	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
+	lists = list(lists)
+	
+	if(len(lists)!=0):
+		
+		df = pd.DataFrame(lists) 
+		
+		data_mob = []
+		for i in range(0,len(df.user)):
+					data_mob.append(df.user[i]['mobile'])
 
-
-
-
-
-
+		df_mob = pd.DataFrame(data_mob,columns=["Mobile"])
+		count = df_mob['Mobile'].value_counts()
+		count  = count.to_frame().reset_index()
+		count.columns = ['User','Count']
+		count = count.replace(True,"Mobile")
+		count = count.replace(False,"Desktop")
+		count['percentage'] = round(((count['Count']/count['Count'].sum())*100),2)
+		count = count.drop(columns="Count")
+		count.columns = ['User','Percentage']
+		return count.to_json(orient = "records")
+	else:
+		return "No data"
+	
 
 #Time Zone
 @hug.get('/data/time_zone', versions=1)
-def zone(date_start, date_end, asset_id):
+def time_zone(date_start, date_end, asset_id):
 
 	
 	date_start = parser.parse(date_start,dayfirst=True)
@@ -393,8 +453,8 @@ def zone(date_start, date_end, asset_id):
 		count = df_zone['Count'].value_counts()
 		count = count.to_frame().reset_index()
 		count['percentage'] = round(((count['Count']/count['Count'].sum())*100),2)
-		count = count.drop(columns="Count")
-		count.columns = ['Time Zone','Percentage']
+		# count = count.drop(columns="Count")
+		count.columns = ['TimeZone','Count', 'Percentage']
 
 		return count.to_json(orient='records')
 		
@@ -403,8 +463,8 @@ def zone(date_start, date_end, asset_id):
 
 		
 #Language
-@hug.get('/data/lan', versions=1)
-def lan(date_start, date_end, asset_id):
+@hug.get('/data/language', versions=1)
+def language(date_start, date_end, asset_id):
 
 	
 	date_start = parser.parse(date_start,dayfirst=True)
@@ -430,14 +490,20 @@ def lan(date_start, date_end, asset_id):
 		count = df_lan['Count'].value_counts()
 		count = count.to_frame().reset_index()
 		count['percentage'] = round(((count['Count']/count['Count'].sum())*100),2)
-		count = count.drop(columns="Count")
-		count.columns = ['Language','Percentage']
+		# count = count.drop(columns="Count")
+		count.columns = ['Language','Count', 'Percentage']
 
 		return count.to_json(orient='records')
 		
 	else:
 		return "No Data"
 		
+
+
+
+
+
+
 #Apriori on href and referrer
 @hug.get('/data/href_referrer', versions=1)
 def href_referrer(date_start, date_end, asset_id,support):
@@ -511,73 +577,8 @@ def href(date_start, date_end, asset_id,support):
 	else:
 		return "No Data"
 		
+				
 					
-@hug.get('/data/mobile', versions=1)
-def mobile(date_start,date_end,asset_id):
-		
-		
-	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
-	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
-	
-	data = db.reports
-	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
-	lists = list(lists)
-	
-	if(len(lists)!=0):
-		
-		df = pd.DataFrame(lists) 
-		
-		data_mob = []
-		for i in range(0,len(df.user)):
-					data_mob.append(df.user[i]['mobile'])
-
-		df_mob = pd.DataFrame(data_mob,columns=["Mobile"])
-		count = df_mob['Mobile'].value_counts()
-		count  = count.to_frame().reset_index()
-		count.columns = ['User','Count']
-		count = count.replace(True,"Mobile user")
-		count = count.replace(False,"Non Mobile User")
-		count['percentage'] = round(((count['Count']/count['Count'].sum())*100),2)
-		count = count.drop(columns="Count")
-		count.columns = ['User','Percentage']
-		return count.to_json(orient = "records")
-	else:
-		return "No data"
-		
-@hug.get('/data/os', versions=1)
-def os(date_start,date_end,asset_id):
-		
-		
-	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
-	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
-	
-	data = db.reports
-	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
-	lists = list(lists)
-	
-	if(len(lists)!=0):
-		
-		df = pd.DataFrame(lists) 
-		
-		data_os = []
-		for i in range(0,len(df.user)):
-			if 'os' in df.user[i]:
-				data_os.append(df.user[i]['os'])
-
-		df_os = pd.DataFrame(data_os,columns=["Count"])
-		count = df_os['Count'].value_counts()
-		count = count.to_frame().reset_index()
-		count['percentage'] = round(((count['Count']/count['Count'].sum())*100),2)
-		count = count.drop(columns="Count")
-		count.columns = ['OS','Percentage']
-		return count.to_json(orient = "records")
-	else:
-		return "No data"
-						
 #Apriori on elements
 @hug.get('/data/ele', versions=1)
 def ele(date_start, date_end, asset_id,support):

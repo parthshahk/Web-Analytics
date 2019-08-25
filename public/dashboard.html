@@ -136,7 +136,7 @@
                             <thead>
                                 <tr>
                                     <th>Resolution</th>
-                                    <th>Percentage</th>
+                                    <th>Users</th>
                                 </tr>
                             </thead>
                             <tbody v-html="resolution"></tbody>
@@ -151,8 +151,52 @@
             </div>
 
 
+            <div class="row">
+                <div class="col s12 center">
+                    <h5>Device Information</h5>
+                </div>
+                <div class="row"></div>
+                <div class="row"></div>
 
-            <br><br><br><br><br><br><br><br><br><br><br><br>
+                <div class="row">
+                    <div class="col s3 offset-s2 center">
+                        <canvas id="os"></canvas>
+                    </div>
+
+                    <div class="col s3 offset-s2">
+                        <canvas id="mobile"></canvas>
+                    </div>
+                </div>
+
+                <div class="row"></div>
+                <div class="col s4 offset-s4 center divider"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 center">
+                    <h5>Regional Information</h5>
+                </div>
+                <div class="row"></div>
+                <div class="row"></div>
+
+                <div class="row">
+                    <div class="col s4 offset-s1 center">
+                        <canvas id="time_zone"></canvas>
+                    </div>
+
+                    <div class="col s4 offset-s1">
+                        <canvas id="language"></canvas>
+                    </div>
+                </div>
+
+                <div class="row"></div>
+                <div class="col s4 offset-s4 center divider"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+            </div>
+
         </div>
         <script type="text/javascript" src="./js/materialize.min.js"></script>
         <script src="./js/Chart.min.js"></script>
