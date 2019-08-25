@@ -4,6 +4,7 @@ new Vue({
         asset_id: "",
         total_users: "",
         unique_users: "",
+        time_spend: "",
         colors: [
             '#08415C',
             '#858F98',
@@ -67,6 +68,15 @@ new Vue({
                     self.total_users = response.data[0]
                 }else{
                     self.total_users = 0
+                }
+            })
+
+            axios.get(`http://localhost:8000/v1/data/time_spend?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
+            .then(function(response){
+                if(response.data != "No Data"){
+                    self.time_spend = response.data[0] + '<small>min</small>'
+                }else{
+                    self.time_spend = 0
                 }
             })
 

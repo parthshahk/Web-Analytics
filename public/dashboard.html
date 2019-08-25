@@ -42,13 +42,17 @@
                 <div class="col s12 center">
                     <h5>Visitors</h5>
                 </div>
-                <div class="col s3 offset-s3 center">
+                <div class="col s2 offset-s3 center">
                     <h6 class="light">Unique</h6>
                     <h5 class="light" v-text='unique_users'></h5>
                 </div>
-                <div class="col s3 center">
+                <div class="col s2 center">
                     <h6 class="light">Total</h6>
                     <h5 class="light" v-text='total_users'></h5>
+                </div>
+                <div class="col s2 center">
+                    <h6 class="light">Avg. Time</h6>
+                    <h5 class="light" v-html='time_spend'></h5>
                 </div>
                 <div class="row"></div>
                 <div class="col s4 offset-s4 center divider"></div>

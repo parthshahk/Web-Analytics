@@ -60,6 +60,35 @@ def total_users(date_start,date_end,asset_id):
 		return "No Data"
 
 
+#Avg. Time Spend		
+@hug.get('/data/time_spend', versions=1)
+def time_spend(date_start,date_end,asset_id):
+		
+	date_start = parser.parse(date_start,dayfirst=True)
+	date_start = date_start.isoformat().replace("-0", "-")
+	date_end = parser.parse(date_end,dayfirst=True)
+	date_end = date_end.isoformat().replace("-0", "-")
+	
+	data = db.reports
+	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
+	lists = list(lists)
+	
+	if(len(lists)!=0):
+		
+		df = pd.DataFrame(lists) 
+		time_lst = []
+		for i in range(0,len(df.elements)):
+			a = len(df.elements[i])*5
+			time_lst.append(a)
+		average = (sum(time_lst)/len(time_lst))/60
+		average = round(average,1)
+		average_lst = []
+		average_lst.append(average)
+		return average_lst
+	else:
+		return "No Data"
+		
+
 #Time Month
 @hug.get('/data/time_month', versions=1)
 def time_month(date_start, date_end, asset_id):
@@ -456,35 +485,7 @@ def itemcount(date_start,date_end,asset_id):
 	else:
 		return "No data"
 		
-#AVG TIME SPEND BY USERS		
-@hug.get('/data/time', versions=1)
-def time_spend(date_start,date_end,asset_id):
-		
-		
-	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
-	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
-	
-	data = db.reports
-	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
-	lists = list(lists)
-	
-	if(len(lists)!=0):
-		
-		df = pd.DataFrame(lists) 
-		time_lst = []
-		for i in range(0,len(df.elements)):
-			a = len(df.elements[i])*5
-			time_lst.append(a)
-		average = (sum(time_lst)/len(time_lst))/60
-		average = round(average,2)
-		average_lst = []
-		average_lst.append(average)
-		return average_lst
-	else:
-		return "No data"
-		
+
 		
 #Resolution
 @hug.get('/data/resolution', versions=1)
