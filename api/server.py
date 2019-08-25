@@ -15,7 +15,7 @@ api = hug.API(__name__)
 api.http.add_middleware(hug.middleware.CORSMiddleware(api, max_age=10))
 
 
-#Unique Users
+# Unique Users
 @hug.get('/data/unique_users', versions=1)
 def unique_users(date_start,date_end,asset_id):
 	date_start = parser.parse(date_start,dayfirst=True)
@@ -36,7 +36,7 @@ def unique_users(date_start,date_end,asset_id):
 		return "No Data"
 
 
-#Total Users
+# Total Users
 @hug.get('/data/total_users', versions=1)
 def total_users(date_start,date_end,asset_id):
 	date_start = parser.parse(date_start,dayfirst=True)
@@ -59,6 +59,80 @@ def total_users(date_start,date_end,asset_id):
 	else:
 		return "No Data"
 
+
+# Revisitor
+@hug.get('/data/revisitors', versions=1)
+def revisitors(date_start, date_end, asset_id):
+	
+	date_start = parser.parse(date_start,dayfirst=True)
+	date_start = date_start.isoformat().replace("-0", "-")
+	date_end = parser.parse(date_end,dayfirst=True)
+	date_end = date_end.isoformat().replace("-0", "-")
+	
+	data = db.reports
+	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
+	lists = list(lists)
+	
+	if(len(lists) != 0):
+	
+		df = pd.DataFrame(lists) 
+		data_date = []
+		cnt = 0
+
+		for i in range(0,len(df.visits)):
+			data= []
+			for j in range(0,len(df.visits[i])):
+				data.append(df.visits[i][j]['date'])
+			data_date.append(data)
+
+		for i in range(0,len(df.visits)):
+			for j in range(len(df.visits[i])-1,0,-1):
+				time = data_date[i][j]
+				time = datetime.strptime(time,"%Y-%m-%dT%H:%M:%S")
+				time1 = data_date[i][j-1]
+				time1 = datetime.strptime(time1,"%Y-%m-%dT%H:%M:%S")
+				t = time-time1
+				if t.days > 1 :
+					cnt+=1
+		count = []
+		cnt = round(((cnt/len(df.user))*100),1)
+		count.append(cnt)
+		return count
+		
+	else:
+		return "No Data"	
+			
+
+# Bounce Rate
+@hug.get('/data/bounce_rate', versions=1)
+def bounce_rate(date_start, date_end, asset_id):
+
+	date_start = parser.parse(date_start,dayfirst=True)
+	date_start = date_start.isoformat().replace("-0", "-")
+	date_end = parser.parse(date_end,dayfirst=True)
+	date_end = date_end.isoformat().replace("-0", "-")
+	
+	data = db.reports
+	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
+	lists = list(lists)
+	
+	if(len(lists) != 0):
+	
+		df = pd.DataFrame(lists) 
+		time_lst = []
+		cnt = 0
+		for i in range(0,len(df.elements)):
+			a = len(df.elements[i])*5
+			if a <= 20:
+				cnt+=1
+		count = []
+		cnt = round(((cnt/len(df.user))*100),1)
+		count.append(cnt)
+		return count
+		
+	else:
+		return "No Data"	
+		
 
 #Avg. Time Spend		
 @hug.get('/data/time_spend', versions=1)

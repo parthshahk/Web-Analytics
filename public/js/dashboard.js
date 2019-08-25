@@ -5,6 +5,8 @@ new Vue({
         total_users: "",
         unique_users: "",
         time_spend: "",
+        revisitors: "",
+        bounce_rate: "",
         url_count: "",
         element_count: "",
         browser: "",
@@ -69,22 +71,34 @@ new Vue({
                 })
     
             axios.get(`http://localhost:8000/v1/data/total_users?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
-            .then(response => {
-                if(response.data != "No Data"){
-                    self.total_users = response.data[0]
-                }else{
-                    self.total_users = 0
-                }
-            })
+                .then(response => {
+                    if(response.data != "No Data"){
+                        self.total_users = response.data[0]
+                    }else{
+                        self.total_users = 0
+                    }
+                })
 
             axios.get(`http://localhost:8000/v1/data/time_spend?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
-            .then(response => {
-                if(response.data != "No Data"){
-                    self.time_spend = response.data[0] + '<small>min</small>'
-                }else{
-                    self.time_spend = 0
-                }
-            })
+                .then(response => {
+                    if(response.data != "No Data"){
+                        self.time_spend = response.data[0] + '<small>min</small>'
+                    }else{
+                        self.time_spend = 0
+                    }
+                })
+
+            axios.get(`http://localhost:8000/v1/data/revisitors?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
+                .then(response => {
+                    var data = JSON.parse(response.data)
+                    self.revisitors = data + "<small>%</small>"
+                })
+
+            axios.get(`http://localhost:8000/v1/data/bounce_rate?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
+                .then(response => {
+                    var data = JSON.parse(response.data)
+                    self.bounce_rate = data + "<small>%</small>"
+                })
 
 
             axios.get(`http://localhost:8000/v1/data/time_month?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
@@ -381,8 +395,6 @@ new Vue({
                         })
                         
                     })
-
-
 
 
         })
