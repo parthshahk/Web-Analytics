@@ -7,6 +7,8 @@ new Vue({
         time_spend: "",
         url_count: "",
         element_count: "",
+        browser: "",
+        resolution: "",
         colors: [
             '#08415C',
             '#858F98',
@@ -176,7 +178,7 @@ new Vue({
             axios.get(`http://localhost:8000/v1/data/element_count?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
                 .then(function(response){
                     var data = JSON.parse(response.data)
-                    console.log(data)
+                    
                     for(var i=0; i<10; i++){
                         self.element_count += `<tr>
                             <td>${data[i].index}</td>
@@ -184,6 +186,49 @@ new Vue({
                         </tr>`
                     }
                 })
+
+
+            axios.get(`http://localhost:8000/v1/data/browser?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
+                .then(function(response){
+                    var data = JSON.parse(response.data)
+                    var percent = []
+                    var browser = []
+                    data.forEach(element =>{
+                        browser.push(element.Browser)
+                        percent.push(element.Percentage)
+                    })
+                    var ctx = document.getElementById('browser');
+                    var myChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: browser,
+                            datasets: [{
+                                label: 'Browser',
+                                data: percent,
+                                backgroundColor: self.colors,
+                                borderWidth: 1
+                            }]
+                        }
+                    });
+
+                })
+
+
+                axios.get(`http://localhost:8000/v1/data/resolution?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
+                .then(function(response){
+                    var data = JSON.parse(response.data)
+                    
+                    for(var i=0; i<6; i++){
+                        self.resolution += `<tr>
+                            <td>${data[i].Resolution}</td>
+                            <td>${data[i].Percentage}</td>
+                        </tr>`
+                    }
+                })
+
+
+
+
 
 
         })

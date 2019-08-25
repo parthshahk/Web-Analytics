@@ -166,7 +166,7 @@ def time_week(date_start, date_end, asset_id):
 		return "No Data"
 
 
-#Time of Day
+# Time of Day
 @hug.get('/data/time_day', versions=1)
 def time_day(date_start, date_end, asset_id):
 	
@@ -203,7 +203,7 @@ def time_day(date_start, date_end, asset_id):
 				c+=1
 			else:
 				d+=1
-		data = [['Morning', a],['Noon',b],['Evening',c],['Night',d]]
+		data = [['Morning', a],['Afternoon',b],['Evening',c],['Night',d]]
 
 		df_slot = pd.DataFrame(data, columns = ['Time', 'Count']) 
 
@@ -219,7 +219,7 @@ def time_day(date_start, date_end, asset_id):
 		return "No Data"
 
 
-#URL View Counts
+# URL View Counts
 @hug.get('/data/url_count', versions=1)
 def url_count(date_start, date_end, asset_id):
 	
@@ -247,7 +247,8 @@ def url_count(date_start, date_end, asset_id):
 	else:
 		return "No Data"
 
-#Element View Counts
+
+# Element View Counts
 @hug.get('/data/element_count', versions=1)
 def element_count(date_start,date_end,asset_id):
 	
@@ -285,6 +286,74 @@ def element_count(date_start,date_end,asset_id):
 		return "No Data"
 
 
+# Browser
+@hug.get('/data/browser', versions=1)
+def browser(date_start,date_end,asset_id):
+		
+	date_start = parser.parse(date_start,dayfirst=True)
+	date_start = date_start.isoformat().replace("-0", "-")
+	date_end = parser.parse(date_end,dayfirst=True)
+	date_end = date_end.isoformat().replace("-0", "-")
+	
+	data = db.reports
+	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
+	lists = list(lists)
+	
+	if(len(lists)!=0):
+		
+		df = pd.DataFrame(lists) 
+		data_brow = []
+		for i in range(0,len(df.user)):
+					data_brow.append(df.user[i]['browser'])
+				
+		print(len(data_brow))
+
+		df_brow = pd.DataFrame(data_brow,columns=["Count"])
+
+		count = df_brow['Count'].value_counts()
+		count = count.to_frame().reset_index()
+		count['percentage'] = round(((count['Count']/count['Count'].sum())*100),2)
+		count = count.drop(columns="Count")
+		count.columns = ['Browser','Percentage']
+		return count.to_json(orient = "records")
+	else:
+		return "No Data"
+
+
+# Screen Resolution
+@hug.get('/data/resolution', versions=1)
+def resolution(date_start,date_end,asset_id):
+	
+	
+	date_start = parser.parse(date_start,dayfirst=True)
+	date_start = date_start.isoformat().replace("-0", "-")
+	date_end = parser.parse(date_end,dayfirst=True)
+	date_end = date_end.isoformat().replace("-0", "-")
+	
+	data = db.reports
+	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
+	lists = list(lists)
+	
+	if(len(lists)!=0):
+	
+		df = pd.DataFrame(lists) 
+		data_res = []
+		for i in range(0,len(df.user)):
+					data_res.append(df.user[i]['resolution'])
+				
+
+
+		df_res = pd.DataFrame(data_res,columns=["Count"])
+
+		count = df_res['Count'].value_counts()
+		count = count.to_frame().reset_index()
+		count['percentage'] = round(((count['Count']/count['Count'].sum())*100),2)
+		count = count.drop(columns="Count")
+		count.columns = ['Resolution','Percentage']
+
+		return count.to_json(orient = 'records')
+	else:
+		return "No Data"
 
 
 
@@ -368,43 +437,6 @@ def lan(date_start, date_end, asset_id):
 		
 	else:
 		return "No Data"
-
-#Cookie
-@hug.get('/data/cookie', versions=1)
-def cookie(date_start, date_end, asset_id):
-
-	
-	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
-	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
-	
-	data = db.reports
-	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
-	lists = list(lists)
-	
-	if(len(lists) != 0):
-	
-		df = pd.DataFrame(lists) 
-		data_cookie = []
-		for i in range(0,len(df.user)):
-					data_cookie.append(df.user[i]['cookie'])
-				
-
-
-		df_cookie = pd.DataFrame(data_cookie,columns=["Count"])
-
-		count = df_cookie['Count'].value_counts()
-		count = count.to_frame().reset_index()
-		count['percentage'] = round(((count['Count']/count['Count'].sum())*100),2)
-		count = count.drop(columns="Count")
-		count.columns = ['Cookie','Percentage']
-
-		return count.to_json(orient='records')
-		
-	else:
-		return "No Data"
-
 		
 #Apriori on href and referrer
 @hug.get('/data/href_referrer', versions=1)
@@ -479,77 +511,7 @@ def href(date_start, date_end, asset_id,support):
 	else:
 		return "No Data"
 		
-		
-#Resolution
-@hug.get('/data/resolution', versions=1)
-def resolution(date_start,date_end,asset_id):
-	
-	
-	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
-	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
-	
-	data = db.reports
-	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
-	lists = list(lists)
-	
-	if(len(lists)!=0):
-	
-		df = pd.DataFrame(lists) 
-		data_res = []
-		for i in range(0,len(df.user)):
-					data_res.append(df.user[i]['resolution'])
-				
-
-
-		df_res = pd.DataFrame(data_res,columns=["Count"])
-
-		count = df_res['Count'].value_counts()
-		count = count.to_frame().reset_index()
-		count['percentage'] = round(((count['Count']/count['Count'].sum())*100),2)
-		count = count.drop(columns="Count")
-		count.columns = ['Resolution','Percentage']
-
-		return count.to_json(orient = 'records')
-	else:
-		return "No data"		
-		
-		
-@hug.get('/data/browser', versions=1)
-def browser(date_start,date_end,asset_id):
-		
-		
-	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
-	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
-	
-	data = db.reports
-	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
-	lists = list(lists)
-	
-	if(len(lists)!=0):
-		
-		df = pd.DataFrame(lists) 
-		data_brow = []
-		for i in range(0,len(df.user)):
-					data_brow.append(df.user[i]['browser'])
-				
-		print(len(data_brow))
-
-		df_brow = pd.DataFrame(data_brow,columns=["Count"])
-
-		count = df_brow['Count'].value_counts()
-		count = count.to_frame().reset_index()
-		count['percentage'] = round(((count['Count']/count['Count'].sum())*100),2)
-		count = count.drop(columns="Count")
-		count.columns = ['Browser','Percentage']
-		return count.to_json(orient = "records")
-	else:
-		return "No data"
-		
-		
+					
 @hug.get('/data/mobile', versions=1)
 def mobile(date_start,date_end,asset_id):
 		
