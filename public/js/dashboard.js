@@ -25,7 +25,16 @@ new Vue({
             '#65A603',
             '#F40080',
             '#858F98'
-        ]
+        ],
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
     },
 
     computed: {
@@ -124,7 +133,8 @@ new Vue({
                                 backgroundColor: self.colors,
                                 borderWidth: 1
                             }]
-                        }
+                        },
+                        options: self.options
                     });
                 })
 
@@ -150,7 +160,8 @@ new Vue({
                                 backgroundColor: self.colors,
                                 borderWidth: 1
                             }]
-                        }
+                        },
+                        options: self.options
                     });
                 })
 
@@ -174,7 +185,8 @@ new Vue({
                                 backgroundColor: self.colors,
                                 borderWidth: 1
                             }]
-                        }
+                        },
+                        options: self.options
                     });
                 })
 
