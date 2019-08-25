@@ -219,25 +219,9 @@ def time_day(date_start, date_end, asset_id):
 		return "No Data"
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#URL COUNTS
-@hug.get('/data/urlcounts', versions=1)
-def urlcount(date_start, date_end, asset_id):
+#URL View Counts
+@hug.get('/data/url_count', versions=1)
+def url_count(date_start, date_end, asset_id):
 	
 	date_start = parser.parse(date_start,dayfirst=True)
 	date_start = date_start.isoformat().replace("-0", "-")
@@ -262,6 +246,55 @@ def urlcount(date_start, date_end, asset_id):
 		
 	else:
 		return "No Data"
+
+#Element View Counts
+@hug.get('/data/element_count', versions=1)
+def element_count(date_start,date_end,asset_id):
+	
+	date_start = parser.parse(date_start,dayfirst=True)
+	date_start = date_start.isoformat().replace("-0", "-")
+	date_end = parser.parse(date_end,dayfirst=True)
+	date_end = date_end.isoformat().replace("-0", "-")
+	
+	data = db.reports
+	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
+	lists = list(lists)
+	
+	if(len(lists)!=0):
+	
+		df = pd.DataFrame(lists) 
+		data = []
+		data_item = []
+		for i in range(0,len(df.elements)):
+			data.append(df.elements[i])
+		def removenesting(l): 
+			for i in l: 
+				if type(i) == list: 
+					removenesting(i) 
+				else: 
+					data_item.append(i)
+		removenesting(data)
+		df_item = pd.DataFrame(data_item,columns = ['Counts'])
+
+		indexNames = df_item[ (df_item['Counts'] == 'search_form') ].index
+		df_item.drop(indexNames , inplace=True) 
+		count = df_item['Counts'].value_counts()
+		count = count.to_frame().reset_index()
+		return count.to_json(orient = 'records')
+	else:
+		return "No Data"
+
+
+
+
+
+
+
+
+
+
+
+
 
 #Time Zone
 @hug.get('/data/time_zone', versions=1)
@@ -446,46 +479,6 @@ def href(date_start, date_end, asset_id,support):
 	else:
 		return "No Data"
 		
-	
-#Element COUNTS
-@hug.get('/data/itemcounts', versions=1)
-def itemcount(date_start,date_end,asset_id):
-	
-	
-	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
-	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
-	
-	data = db.reports
-	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
-	lists = list(lists)
-	
-	if(len(lists)!=0):
-	
-		df = pd.DataFrame(lists) 
-		data = []
-		data_item = []
-		for i in range(0,len(df.elements)):
-			data.append(df.elements[i])
-		def removenesting(l): 
-			for i in l: 
-				if type(i) == list: 
-					removenesting(i) 
-				else: 
-					data_item.append(i)
-		removenesting(data)
-		df_item = pd.DataFrame(data_item,columns = ['Counts'])
-
-		indexNames = df_item[ (df_item['Counts'] == 'search_form') ].index
-		df_item.drop(indexNames , inplace=True) 
-		count = df_item['Counts'].value_counts().head(20)
-		count = count.to_frame().reset_index()
-		return count.to_json(orient = 'records')
-	else:
-		return "No data"
-		
-
 		
 #Resolution
 @hug.get('/data/resolution', versions=1)
@@ -623,3 +616,42 @@ def os(date_start,date_end,asset_id):
 	else:
 		return "No data"
 						
+#Apriori on elements
+@hug.get('/data/ele', versions=1)
+def ele(date_start, date_end, asset_id,support):
+
+	support = float(support)
+	date_start = parser.parse(date_start,dayfirst=True)
+	date_start = date_start.isoformat().replace("-0", "-")
+	date_end = parser.parse(date_end,dayfirst=True)
+	date_end = date_end.isoformat().replace("-0", "-")
+	
+	data = db.reports
+	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
+	lists = list(lists)
+	
+	if(len(lists) != 0):
+	
+		df = pd.DataFrame(lists) 
+		data_ele = []
+
+		for i in range(0,len(df.elements)):
+			data_ele.append(df.elements[i]) 
+
+		for i in range(0,len(data_ele)):
+			for j in range(0,len(data_ele[i])):
+				if data_ele[i][j] is None:
+					data_ele[i][j] = "other"
+
+
+		te = TransactionEncoder()
+
+		te_arry = te.fit_transform(data_ele)
+		df1 = pd.DataFrame(te_arry,columns=te.columns_)
+		frq_item = apriori(df1, min_support=support,use_colnames=True)
+		rule = association_rules(frq_item,metric='confidence',min_threshold=0.5)
+
+		return rule.to_json(orient='records')
+		
+	else:
+		return "No Data"

@@ -57,6 +57,7 @@
                 <div class="row"></div>
                 <div class="col s4 offset-s4 center divider"></div>
                 <div class="row"></div>
+                <div class="row"></div>
             </div>
 
 
@@ -78,12 +79,50 @@
                 <div class="col s4 center">
                     <canvas id="time_day"></canvas>
                 </div>
-                
+                <div class="row"></div>
+                <div class="col s4 offset-s4 center divider"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 center">
+                    <h5>Impressions</h5>
+                </div>
+                <div class="row"></div>
+
+                <div class="col s4 offset-s1">
+                    <table class="striped">
+                        <thead>
+                            <tr>
+                                <th>URL</th>
+                                <th>Views</th>
+                            </tr>
+                        </thead>
+                        <tbody v-html="url_count"></tbody>
+                    </table>
+                </div>
+
+                <div class="col s4 offset-s2">
+                    <table class="striped">
+                        <thead>
+                            <tr>
+                                <th>Element</th>
+                                <th>Views</th>
+                            </tr>
+                        </thead>
+                        <tbody v-html="element_count"></tbody>
+                    </table>
+                </div>
+                <div class="row"></div>
+                <div class="col s4 offset-s4 center divider"></div>
+                <div class="row"></div>
+                <div class="row"></div>
             </div>
 
 
 
-
+            <br><br><br><br><br><br><br><br><br><br><br><br>
         </div>
         <script type="text/javascript" src="./js/materialize.min.js"></script>
         <script src="./js/Chart.min.js"></script>

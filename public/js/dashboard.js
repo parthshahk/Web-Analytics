@@ -5,6 +5,8 @@ new Vue({
         total_users: "",
         unique_users: "",
         time_spend: "",
+        url_count: "",
+        element_count: "",
         colors: [
             '#08415C',
             '#858F98',
@@ -158,6 +160,30 @@ new Vue({
                     });
                 })
 
+
+            axios.get(`http://localhost:8000/v1/data/url_count?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
+                .then(function(response){
+                    var data = JSON.parse(response.data)
+                    
+                    for(var i=0; i<10; i++){
+                        self.url_count += `<tr>
+                            <td>${data[i].index}</td>
+                            <td>${data[i].Count}</td>
+                        </tr>`
+                    }
+                })
+
+            axios.get(`http://localhost:8000/v1/data/element_count?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
+                .then(function(response){
+                    var data = JSON.parse(response.data)
+                    console.log(data)
+                    for(var i=0; i<10; i++){
+                        self.element_count += `<tr>
+                            <td>${data[i].index}</td>
+                            <td>${data[i].Counts}</td>
+                        </tr>`
+                    }
+                })
 
 
         })
