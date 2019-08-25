@@ -9,6 +9,8 @@ new Vue({
         element_count: "",
         browser: "",
         resolution: "",
+        apriori_href: "",
+        apriori_elements: "",
         colors: [
             '#08415C',
             '#DB504A',
@@ -43,7 +45,7 @@ new Vue({
     mounted: function(){
 
         var self = this
-        //Get Assets
+        
         axios.get('/getAssets')
         .then(function(response){
             var ddl = document.getElementById("assetList");
@@ -58,7 +60,7 @@ new Vue({
             self.asset_id = ddl.options[1].value
 
             axios.get(`http://localhost:8000/v1/data/unique_users?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
-                .then(function(response){
+                .then(response => {
                     if(response.data != "No Data"){
                         self.unique_users = response.data[0]
                     }else{
@@ -67,7 +69,7 @@ new Vue({
                 })
     
             axios.get(`http://localhost:8000/v1/data/total_users?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
-            .then(function(response){
+            .then(response => {
                 if(response.data != "No Data"){
                     self.total_users = response.data[0]
                 }else{
@@ -76,7 +78,7 @@ new Vue({
             })
 
             axios.get(`http://localhost:8000/v1/data/time_spend?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
-            .then(function(response){
+            .then(response => {
                 if(response.data != "No Data"){
                     self.time_spend = response.data[0] + '<small>min</small>'
                 }else{
@@ -86,7 +88,7 @@ new Vue({
 
 
             axios.get(`http://localhost:8000/v1/data/time_month?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
-                .then(function(response){
+                .then(response => {
                     
                     var data = JSON.parse(response.data)
                     var percent = []
@@ -114,7 +116,7 @@ new Vue({
 
 
             axios.get(`http://localhost:8000/v1/data/time_week?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
-                .then(function(response){
+                .then(response => {
                     var data = JSON.parse(response.data)
                     var percent = []
                     var days = []
@@ -139,7 +141,7 @@ new Vue({
                 })
 
             axios.get(`http://localhost:8000/v1/data/time_day?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
-                .then(function(response){
+                .then(response => {
                     var data = JSON.parse(response.data)
                     var percent = []
                     var days = []
@@ -164,7 +166,7 @@ new Vue({
 
 
             axios.get(`http://localhost:8000/v1/data/url_count?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
-                .then(function(response){
+                .then(response => {
                     var data = JSON.parse(response.data)
                     
                     for(var i=0; i<10; i++){
@@ -176,7 +178,7 @@ new Vue({
                 })
 
             axios.get(`http://localhost:8000/v1/data/element_count?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
-                .then(function(response){
+                .then(response => {
                     var data = JSON.parse(response.data)
                     
                     for(var i=0; i<10; i++){
@@ -189,7 +191,7 @@ new Vue({
 
 
             axios.get(`http://localhost:8000/v1/data/browser?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
-                .then(function(response){
+                .then(response => {
                     var data = JSON.parse(response.data)
                     var percent = []
                     var browser = []
@@ -215,7 +217,7 @@ new Vue({
 
 
                 axios.get(`http://localhost:8000/v1/data/resolution?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
-                .then(function(response){
+                .then(response => {
                     var data = JSON.parse(response.data)
                     
                     for(var i=0; i<6; i++){
@@ -228,7 +230,7 @@ new Vue({
 
 
                 axios.get(`http://localhost:8000/v1/data/os?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
-                .then(function(response){
+                .then(response => {
                     var data = JSON.parse(response.data)
                     
                     var percent = []
@@ -254,7 +256,7 @@ new Vue({
                 })
 
                 axios.get(`http://localhost:8000/v1/data/mobile?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
-                .then(function(response){
+                .then(response => {
                     var data = JSON.parse(response.data)
                     
                     var percent = []
@@ -281,7 +283,7 @@ new Vue({
 
 
                 axios.get(`http://localhost:8000/v1/data/time_zone?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
-                    .then(function(response){
+                    .then(response => {
                         var data = JSON.parse(response.data)
                         
                         var percent = []
@@ -306,7 +308,7 @@ new Vue({
                     })
 
                 axios.get(`http://localhost:8000/v1/data/language?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
-                    .then(function(response){
+                    .then(response => {
                         var data = JSON.parse(response.data)
                         
                         var percent = []
@@ -328,6 +330,56 @@ new Vue({
                                 }]
                             }
                         });                        
+                    })
+
+                axios.get(`http://localhost:8000/v1/data/apriori_href?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}&support=0.1`)
+                    .then(response => {
+                        var data = JSON.parse(response.data)
+                        
+                        data.forEach(element => {
+
+                            var antecedents = ""
+                            element.antecedents.forEach(url => {
+                                antecedents += url + "<br>"
+                            })
+
+                            var consequents = ""
+                            element.consequents.forEach(url => {
+                                consequents += url + "<br>"
+                            })
+
+                            self.apriori_href += `<tr>
+                            <td>${antecedents}</td>
+                            <td>${consequents}</td>
+                            <td>${Math.round(element.confidence*100)}%</td>
+                            </tr>`
+                        })
+                        
+                    })
+
+                axios.get(`http://localhost:8000/v1/data/apriori_elements?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}&support=0.2`)
+                    .then(response => {
+                        var data = JSON.parse(response.data)
+                        
+                        data.forEach(element => {
+
+                            var antecedents = ""
+                            element.antecedents.forEach(url => {
+                                antecedents += url + "<br>"
+                            })
+
+                            var consequents = ""
+                            element.consequents.forEach(url => {
+                                consequents += url + "<br>"
+                            })
+
+                            self.apriori_elements += `<tr>
+                            <td>${antecedents}</td>
+                            <td>${consequents}</td>
+                            <td>${Math.round(element.confidence*100)}%</td>
+                            </tr>`
+                        })
+                        
                     })
 
 

@@ -425,7 +425,7 @@ def mobile(date_start,date_end,asset_id):
 		return "No data"
 	
 
-#Time Zone
+# Time Zone
 @hug.get('/data/time_zone', versions=1)
 def time_zone(date_start, date_end, asset_id):
 
@@ -462,7 +462,7 @@ def time_zone(date_start, date_end, asset_id):
 		return "No Data"
 
 		
-#Language
+# Language
 @hug.get('/data/language', versions=1)
 def language(date_start, date_end, asset_id):
 
@@ -497,52 +497,10 @@ def language(date_start, date_end, asset_id):
 		
 	else:
 		return "No Data"
-		
 
 
-
-
-
-
-#Apriori on href and referrer
-@hug.get('/data/href_referrer', versions=1)
-def href_referrer(date_start, date_end, asset_id,support):
-
-	support = float(support)
-	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
-	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
-	
-	data = db.reports
-	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
-	lists = list(lists)
-	
-	if(len(lists) != 0):
-	
-		df = pd.DataFrame(lists) 
-		data_href = []
-		data_referrer = []
-		for i in range(0,len(df.visits)):
-			for j in range(0,len(df.visits[i])):
-				data_href.append(df.visits[i][j]['location']['href'])
-				data_referrer.append(df.visits[i][j]['referrer'])
-				
-		data_comman = []
-		for m,n in zip(data_href,data_referrer):
-			data_comman.append([m,n])
-		te = TransactionEncoder()
-		te_arry = te.fit_transform(data_comman)
-		df1 = pd.DataFrame(te_arry,columns=te.columns_)
-		frq_item = apriori(df1, min_support=support,use_colnames=True)
-		rule = association_rules(frq_item,metric='confidence',min_threshold=0.5)
-		return rule.to_json(orient='records')
-		
-	else:
-		return "No Data"
-
-#Apriori on HREF
-@hug.get('/data/href', versions=1)
+# Apriori on href
+@hug.get('/data/apriori_href', versions=1)
 def href(date_start, date_end, asset_id,support):
 
 	support = float(support)
@@ -577,10 +535,9 @@ def href(date_start, date_end, asset_id,support):
 	else:
 		return "No Data"
 		
-				
-					
-#Apriori on elements
-@hug.get('/data/ele', versions=1)
+									
+# Apriori on elements
+@hug.get('/data/apriori_elements', versions=1)
 def ele(date_start, date_end, asset_id,support):
 
 	support = float(support)

@@ -87,6 +87,41 @@
 
             <div class="row">
                 <div class="col s12 center">
+                    <h5>Element Association</h5>
+                </div>
+                <div class="col s12">
+                    <table class="striped">
+                        <thead>
+                            <tr>
+                                <th>Antecedents</th>
+                                <th>Consequents</th>
+                                <th>Confidence</th>
+                            </tr>
+                        </thead>
+                        <tbody v-html="apriori_href"></tbody>
+                    </table>
+                </div>
+                <div class="row"></div>
+                <div class="col s6 offset-s3">
+                    <table class="striped">
+                        <thead>
+                            <tr>
+                                <th>Antecedents</th>
+                                <th>Consequents</th>
+                                <th>Confidence</th>
+                            </tr>
+                        </thead>
+                        <tbody v-html="apriori_elements"></tbody>
+                    </table>
+                </div>
+                <div class="row"></div>
+                <div class="col s4 offset-s4 center divider"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 center">
                     <h5>Impressions</h5>
                 </div>
                 <div class="row"></div>
