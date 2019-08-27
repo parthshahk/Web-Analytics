@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="row"></div>
                 <div class="input-field col s2 offset-s5">
-                    <select class="browser-default" id="assetList" v-model="asset_id">
+                    <select class="browser-default" id="assetList" v-model="asset_id" @change="assetChanged()">
                       <option value="" disabled selected>Select Asset</option>
                     </select>
                   </div>
@@ -77,15 +77,18 @@
                 <div class="row"></div>
 
                 <div class="col s4 center">
-                    <canvas id="time_month"></canvas>
+                    <h6 class="light" v-show="noData.time_month">Not Enough Data</h6>
+                    <canvas id="time_month" v-show="!noData.time_month"></canvas>
                 </div>
 
                 <div class="col s4 center">
-                    <canvas id="time_week"></canvas>
+                    <h6 class="light" v-show="noData.time_week">Not Enough Data</h6>
+                    <canvas id="time_week" v-show="!noData.time_week"></canvas>
                 </div>
 
                 <div class="col s4 center">
-                    <canvas id="time_day"></canvas>
+                    <h6 class="light" v-show="noData.time_day">Not Enough Data</h6>
+                    <canvas id="time_day" v-show="!noData.time_day"></canvas>
                 </div>
                 <div class="row"></div>
                 <div class="col s4 offset-s4 center divider"></div>
@@ -99,7 +102,8 @@
                 </div>
                 <div class="col s10 offset-s1 center">
                     <h5 class="light">URL</h5>
-                    <table class="striped">
+                    <h6 class="light" v-show="noData.assoc_url">Not Enough Data</h6>
+                    <table class="striped" v-show="!noData.assoc_url">
                         <thead>
                             <tr>
                                 <th>Antecedents</th>
@@ -113,7 +117,8 @@
                 <div class="row"></div>
                 <div class="col s6 offset-s3 center">
                     <h5 class="light">Web Components</h5>
-                    <table class="striped">
+                    <h6 class="light" v-show="noData.assoc_components">Not Enough Data</h6>
+                    <table class="striped" v-show="!noData.assoc_components">
                         <thead>
                             <tr>
                                 <th>Antecedents</th>
@@ -136,8 +141,9 @@
                 </div>
                 <div class="row"></div>
 
-                <div class="col s4 offset-s1">
-                    <table class="striped">
+                <div class="col s4 offset-s1 center">
+                    <h6 class="light" v-show="noData.count_url">Not Enough Data</h6>
+                    <table class="striped" v-show="!noData.count_url">
                         <thead>
                             <tr>
                                 <th>URL</th>
@@ -148,8 +154,9 @@
                     </table>
                 </div>
 
-                <div class="col s4 offset-s2">
-                    <table class="striped">
+                <div class="col s4 offset-s2 center">
+                    <h6 class="light" v-show="noData.count_element">Not Enough Data</h6>
+                    <table class="striped" v-show="!noData.count_element">
                         <thead>
                             <tr>
                                 <th>Element</th>
@@ -174,10 +181,12 @@
 
                 <div class="row">
                     <div class="col s3 offset-s2 center">
-                        <canvas id="browser"></canvas>
+                        <h6 class="light" v-show="noData.browser">Not Enough Data</h6>
+                        <canvas id="browser" v-show="!noData.browser"></canvas>
                     </div>
-                    <div class="col s3 offset-s2">
-                        <table class="striped">
+                    <div class="col s3 offset-s2 center">
+                        <h6 class="light" v-show="noData.resolution">Not Enough Data</h6>
+                        <table class="striped" v-show="!noData.resolution">
                             <thead>
                                 <tr>
                                     <th>Resolution</th>
@@ -205,11 +214,13 @@
 
                 <div class="row">
                     <div class="col s3 offset-s2 center">
-                        <canvas id="os"></canvas>
+                        <h6 class="light" v-show="noData.os">Not Enough Data</h6>
+                        <canvas id="os" v-show="!noData.os"></canvas>
                     </div>
 
-                    <div class="col s3 offset-s2">
-                        <canvas id="mobile"></canvas>
+                    <div class="col s3 offset-s2 center">
+                        <h6 class="light" v-show="noData.mobile">Not Enough Data</h6>
+                        <canvas id="mobile" v-show="!noData.mobile"></canvas>
                     </div>
                 </div>
 
@@ -228,11 +239,13 @@
 
                 <div class="row">
                     <div class="col s4 offset-s1 center">
-                        <canvas id="time_zone"></canvas>
+                        <h6 class="light" v-show="noData.time_zone">Not Enough Data</h6>
+                        <canvas id="time_zone" v-show="!noData.time_zone"></canvas>
                     </div>
 
-                    <div class="col s4 offset-s1">
-                        <canvas id="language"></canvas>
+                    <div class="col s4 offset-s1 center">
+                        <h6 class="light" v-show="noData.language">Not Enough Data</h6>
+                        <canvas id="language" v-show="!noData.language"></canvas>
                     </div>
                 </div>
 

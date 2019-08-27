@@ -496,7 +496,7 @@ def mobile(date_start,date_end,asset_id):
 		count.columns = ['User','Percentage']
 		return count.to_json(orient = "records")
 	else:
-		return "No data"
+		return "No Data"
 	
 
 # Time Zone
