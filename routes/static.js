@@ -35,6 +35,15 @@ module.exports = function(app){
         }
     });
 
+    // Events
+    app.get("/events", (req, res) => {
+        if(req.session.auth == true){
+            res.sendFile(path.join(config.dirname, 'public', 'events.html'));
+        }else{
+            res.redirect("/");
+        }
+    });
+
     // Anaytics
     app.get('/analytics.js', (req, res) => {
         res.sendFile(path.join(config.dirname, 'client' ,'analytics.js'));

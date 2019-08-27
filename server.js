@@ -9,6 +9,7 @@ const config = require('./config');
 // Models
 const User = require('./models/User');
 const Report = require('./models/Report');
+const Event = require('./models/Event');
 
 // Initialize App
 const app = express();

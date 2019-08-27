@@ -12,6 +12,9 @@ const userSchema = mongoose.Schema({
     },
     assets : {
         type: Array
+    },
+    events : {
+        type: Array
     }
 });
 

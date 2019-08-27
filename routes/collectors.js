@@ -1,5 +1,6 @@
 // Models
 const Report = require('../models/Report');
+const Event = require('../models/Event');
 const cors = require('cors')
 
 module.exports = function(app){
@@ -64,4 +65,48 @@ module.exports = function(app){
         );
         res.end();
     });
+
+    // Collect Events
+    app.get('/triggerEvent', cors(), (req, res, next) => {
+
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var dateTime = date+'T'+time;
+
+        if(req.query.data == null){
+            
+            Event.updateOne(
+                {
+                    eventId: req.query.id
+                },
+                {
+                    $push: {
+                        triggers: {
+                            date: dateTime
+                        }
+                    }
+                }, () => {}
+            )
+
+        }else{
+            
+            Event.updateOne(
+                {
+                    eventId: req.query.id
+                },
+                {
+                    $push: {
+                        triggers: {
+                            date: dateTime,
+                            data: req.query.data
+                        }
+                    }
+                }, () => {}
+            )
+
+        }
+
+        res.end()
+    })
 }
