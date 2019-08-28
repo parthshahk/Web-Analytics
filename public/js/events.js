@@ -15,6 +15,7 @@ fetch('/getEvents')
                     <h6>${element.name}</h6>
                     <h6 class="light">${element.type}</h6>
                     ${qstring}
+                    <a target="_BLANK" href="/eventAnalysis?id=${element.id}">View Analysis</a>
                 </li>
                 `
         });

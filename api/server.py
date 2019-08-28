@@ -180,8 +180,9 @@ def time_month(date_start, date_end, asset_id):
 	
 		df = pd.DataFrame(lists) 
 		data_date = []
-		for i in range(0,len(df.user)):
-			data_date.append(df.date[i])
+		for i in range(0,len(df.visits)):
+			for j in range(0,len(df.visits[i])):
+				data_date.append(df.visits[i][j]['date'])
 			
 		data_day = []
 		for i in range(0,len(data_date)):
@@ -218,8 +219,9 @@ def time_week(date_start, date_end, asset_id):
 	
 		df = pd.DataFrame(lists) 
 		data_date = []
-		for i in range(0,len(df.user)):
-			data_date.append(df.date[i])
+		for i in range(0,len(df.visits)):
+			for j in range(0,len(df.visits[i])):
+				data_date.append(df.visits[i][j]['date'])
 			
 		data_day = []
 		for i in range(0,len(data_date)):
@@ -258,8 +260,9 @@ def time_day(date_start, date_end, asset_id):
 		df = pd.DataFrame(lists) 
 		data_date = []
 		a,b,c,d = 0,0,0,0
-		for i in range(0,len(df.user)):
-			data_date.append(df.date[i])
+		for i in range(0,len(df.visits)):
+			for j in range(0,len(df.visits[i])):
+				data_date.append(df.visits[i][j]['date'])
 			
 		data_day = []
 		for i in range(0,len(data_date)):
@@ -646,6 +649,123 @@ def ele(date_start, date_end, asset_id,support):
 		rule = association_rules(frq_item,metric='confidence',min_threshold=0.5)
 
 		return rule.to_json(orient='records')
+		
+	else:
+		return "No Data"
+
+
+# Event Month
+@hug.get('/data/event_time_month', versions=1)
+def event_time_month(event_id):
+
+	data = db.events
+	lists = data.find({'eventId': event_id})
+	lists = list(lists)
+
+	if(len(lists) != 0):
+		df=pd.DataFrame(lists)
+		data_date = []
+
+		for i in range(0, len(df.triggers)):
+			for j in range(0, len(df.triggers[i])):
+				data_date.append(df.triggers[i][j]["date"])
+
+		data_day = []
+		for i in range(0, len(data_date)):
+			time = data_date[i]
+			time = datetime.strptime(time,"%Y-%m-%dT%H:%M:%S")
+			time = time.strftime("%m")
+			data_day.append(time)
+
+		df_day = pd.DataFrame(data_day,columns=["Count"])
+		count = df_day['Count'].value_counts()
+		count = count.to_frame().reset_index()
+		count['percentage'] = round(((count['Count']/count['Count'].sum())*100),2)
+		# count = count.drop(columns="Count")
+		count.columns = ['Month', 'Count', 'Percentage']
+		return count.to_json(orient='records')
+	else:
+		return "No Data"
+
+
+# Event Day of Week
+@hug.get('/data/event_time_week', versions=1)
+def event_time_month(event_id):
+
+	data = db.events
+	lists = data.find({'eventId': event_id})
+	lists = list(lists)
+
+	if(len(lists) != 0):
+		df=pd.DataFrame(lists)
+		data_date = []
+
+		for i in range(0, len(df.triggers)):
+			for j in range(0, len(df.triggers[i])):
+				data_date.append(df.triggers[i][j]["date"])
+
+		data_day = []
+		for i in range(0, len(data_date)):
+			time = data_date[i]
+			time = datetime.strptime(time,"%Y-%m-%dT%H:%M:%S")
+			time = time.strftime("%a")
+			data_day.append(time)
+
+		df_day = pd.DataFrame(data_day,columns=["Count"])
+		count = df_day['Count'].value_counts()
+		count = count.to_frame().reset_index()
+		count['percentage'] = round(((count['Count']/count['Count'].sum())*100),2)
+		# count = count.drop(columns="Count")
+		count.columns = ['Day', 'Count', 'Percentage']
+		return count.to_json(orient='records')
+	else:
+		return "No Data"
+
+# EVent Time of Day
+@hug.get('/data/event_time_day', versions=1)
+def event_time_day(event_id):	
+	
+	data = db.events
+	lists = data.find({'eventId': event_id})
+	lists = list(lists)
+	
+	if(len(lists) != 0):
+	
+		df = pd.DataFrame(lists) 
+		data_date = []
+		a,b,c,d = 0,0,0,0
+		
+		for i in range(0, len(df.triggers)):
+			for j in range(0, len(df.triggers[i])):
+				data_date.append(df.triggers[i][j]["date"])
+			
+		data_day = []
+		for i in range(0,len(data_date)):
+			time = data_date[i]
+			time = datetime.strptime(time,"%Y-%m-%dT%H:%M:%S")
+			time = time.strftime("%H")
+			data_day.append(time)
+		for x in data_day:
+			x = int(x)
+			if x >= 5 and x<= 11:
+				a+=1
+			elif x>=12 and x<=16:
+				b+=1
+			elif x>=17 and x<=20:
+				c+=1
+			else:
+				d+=1
+		data = [['Morning', a],['Afternoon',b],['Evening',c],['Night',d]]
+
+		df_slot = pd.DataFrame(data, columns = ['Time', 'Count']) 
+
+		count = df_slot['Count'].sum()
+		df_slot
+
+		df_slot['Percentage'] = round(((df_slot['Count']/count)*100),2)
+		# df_slot = df_slot.drop(columns="Count")
+		df_slot.columns = ['Time', 'Count', 'Percentage']
+		return df_slot.to_json(orient='records')
 		
 	else:
 		return "No Data"
