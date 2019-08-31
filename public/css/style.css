@@ -2,6 +2,12 @@
     margin-left: 20px;
     font-family: 'Pacifico';
 }
+.brand-logo img{
+    position: relative;
+    top: 6px;
+    right: 8px;
+    width: 40px;
+}
 .input-field input:focus + label {
     color: #558b2f !important;
 }

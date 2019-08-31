@@ -53,6 +53,11 @@ module.exports = function(app){
         }
     });
 
+    // Logo
+    app.get("/logo.png", (req, res) => {
+        res.sendFile(path.join(config.dirname, 'public', 'logo.png'));
+    });
+
     // Anaytics
     app.get('/analytics.js', (req, res) => {
         res.sendFile(path.join(config.dirname, 'client' ,'analytics.js'));
