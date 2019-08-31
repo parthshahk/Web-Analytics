@@ -7,6 +7,7 @@ var vue = new Vue({
         time_spend: "",
         revisitors: "",
         bounce_rate: "",
+        lost_leads: "",
         url_count: "",
         element_count: "",
         browser: "",
@@ -149,7 +150,17 @@ var vue = new Vue({
                         self.bounce_rate = "-"
                     }
                 })
-
+            
+            axios.get(`http://localhost:8000/v1/data/lost_purchases?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
+                .then(response => {
+                    if(response.data != "No Data"){
+                        var data = JSON.parse(response.data)
+                        var per = 100 - Math.round((data[0].Count / data[1].Count)*100)
+                        self.lost_leads = per + "<small>%</small>"
+                    }else{
+                        self.lost_leads = "-"
+                    }
+                })
 
             axios.get(`http://localhost:8000/v1/data/time_month?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}`)
                 .then(response => {

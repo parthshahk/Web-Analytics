@@ -769,3 +769,36 @@ def event_time_day(event_id):
 		
 	else:
 		return "No Data"
+
+# Lost Purchases
+@hug.get('/data/lost_purchases', versions=1)
+def checkout(date_start,date_end,asset_id):
+		
+	date_start = parser.parse(date_start,dayfirst=True)
+	date_start = date_start.isoformat().replace("-0", "-")
+	date_end = parser.parse(date_end,dayfirst=True)
+	date_end = date_end.isoformat().replace("-0", "-")
+	
+	data = db.reports
+	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
+	lists = list(lists)
+    	
+	if(len(lists)!=0):
+		df = pd.DataFrame(lists) 
+		data_path = []
+    
+		for i in range(0,len(df.visits)):
+			for j in range(0,len(df.visits[i])):
+				if(df.visits[i][j]['location']['path'] !='/'):
+					data_path.append(df.visits[i][j]['location']['path'])
+				ty = data_path.count('/thankyou.php')
+				co = data_path.count('/checkout.php')
+		lst = []
+		lst.append(ty)
+		lst.append(co)
+		data = [['Purchased', ty],['Lost',co]]
+		df_slot = pd.DataFrame(data, columns = ['Type', 'Count'])
+		return df_slot.to_json(orient='records')
+		
+	else:
+		return "No Data"
