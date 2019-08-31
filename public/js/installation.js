@@ -18,7 +18,6 @@ var website = "http://localhost:5000";
     const anid = "${x.id}";
 &lt;/script&gt;                                       
 &lt;script src="${website}/client.min.js"&gt;&lt;/script&gt;
-&lt;script src="${website}/in-view.min.js"&gt;&lt;/script&gt;
 &lt;script src="${website}/analytics.js"&gt;&lt;/script&gt; 
                                     </pre>
                                 </div>

@@ -101,7 +101,7 @@ setInterval(() => {
         },
         body: JSON.stringify({data: activity, cookie: cookie, asset: anid})
     });
-}, 6000); ///////////////////////////////////////change
+}, 6000);
 
 setTimeout(() => {
     
@@ -120,4 +120,4 @@ setTimeout(() => {
         body: JSON.stringify({cookie: cookie, asset: anid, location: location, referrer: referrer})
     });
 
-}, 8000);///////////////////////////////////////////change
+}, 3000);
