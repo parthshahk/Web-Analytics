@@ -772,7 +772,7 @@ def event_time_day(event_id):
 
 # Lost Purchases
 @hug.get('/data/lost_purchases', versions=1)
-def checkout(date_start,date_end,asset_id):
+def lost_purchases(date_start,date_end,asset_id):
 		
 	date_start = parser.parse(date_start,dayfirst=True)
 	date_start = date_start.isoformat().replace("-0", "-")
@@ -799,6 +799,35 @@ def checkout(date_start,date_end,asset_id):
 		data = [['Purchased', ty],['Lost',co]]
 		df_slot = pd.DataFrame(data, columns = ['Type', 'Count'])
 		return df_slot.to_json(orient='records')
+		
+	else:
+		return "No Data"
+
+#Apriori on Event Data
+@hug.get('/data/event_apriori_data', versions=1)
+def event_apriori_data(event_id, support):
+
+	support = float(support)
+	data = db.events
+	lists = data.find({'eventId': event_id})
+	lists = list(lists)
+
+	if(len(lists) != 0):
+	
+		df1 = pd.DataFrame(lists)
+		item = [];
+		for i in range(0,len(df1.triggers[0])):
+			text = df1.triggers[0][i]['data']
+			text = text.split(',')
+			item.append(text)
+				
+		te = TransactionEncoder()
+		te_arry = te.fit_transform(item)
+		df2 = pd.DataFrame(te_arry,columns=te.columns_)
+		frq_item = apriori(df2, min_support=support,use_colnames=True)
+		rule = association_rules(frq_item,metric='confidence',min_threshold=0.7)
+
+		return rule.to_json(orient='records')
 		
 	else:
 		return "No Data"

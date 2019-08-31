@@ -38,6 +38,30 @@
                 <div class="row"></div>
             </div>
 
+            <div class="row">
+                <div class="col s12 center">
+                    <h5>Element Association</h5>
+                </div>
+                <div class="col s10 offset-s1 center">
+                    <h5 class="light">URL</h5>
+                    <h6 class="light" v-show="noData.event_data">Not Enough Data</h6>
+                    <table class="striped" v-show="!noData.event_data">
+                        <thead>
+                            <tr>
+                                <th>Antecedents</th>
+                                <th>Consequents</th>
+                                <th>Confidence</th>
+                            </tr>
+                        </thead>
+                        <tbody v-html="event_data"></tbody>
+                    </table>
+                </div>
+                <div class="row"></div>
+                <div class="col s4 offset-s4 center divider"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+            </div>
+
         </div>
 
 

@@ -21,7 +21,7 @@ function randomDate(start, end) {
 
 function randomData(){
 
-    var data = ['a', 'b', 'c', 'd', 'e', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'x', 'y', 'z', 'w']
+    var data = ['Mini Drafter', 'Mini Drafter', 'Arduino Uno', 'Arduino Uno', 'IR Sensor', 'IR Sensor', 'Bluetooth Module', 'Bread Board', 'Bread Board', 'Connecting Wires', 'Connecting Wires', 'CRO Probes', 'Jumper Pins', 'Jumper Pins', 'EG Kit', 'Basic Electronics Kit', 'Basic Electronics Kit']
 
     var purchased = []
 
@@ -40,18 +40,18 @@ function randomData(){
     return purs.substr(0, purs.length-1)
 }
 
-for(var i=0; i<100; i++){
+for(var i=0; i<1000; i++){
     
 
     Event.updateOne(
         {
-            eventId: 'CEyCWQW'
+            eventId: 'XDdedzd'
         },
         {
             $push: {
                 triggers: {
-                    date: randomDate(new Date(2019, 0, 1), new Date(2019, 12, 1))
-                    // data: randomData()
+                    date: randomDate(new Date(2019, 0, 1), new Date(2019, 12, 1)),
+                    data: randomData()
                 }
             }
         }, () => {}

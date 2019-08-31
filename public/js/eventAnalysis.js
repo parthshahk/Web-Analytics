@@ -2,6 +2,7 @@ var vue = new Vue({
     el: "#app",
     data: {
         event_id: '',
+        event_data: '',
         colors: [
             '#08415C',
             '#DB504A',
@@ -27,7 +28,8 @@ var vue = new Vue({
         noData: {
             time_month: false,
             time_week: false,
-            time_day: false
+            time_day: false,
+            event_data: false
         }
     },
 
@@ -146,6 +148,39 @@ var vue = new Vue({
                     }else{
                         self.noData.time_day = true
                     }
+                })
+
+            axios.get(`http://localhost:8000/v1/data/event_apriori_data?event_id=${self.event_id}&support=0.3`)
+                .then(response => {
+
+                    if(response.data != "No Data"){
+
+                        var data = JSON.parse(response.data)
+                        
+                        data.forEach(element => {
+    
+                            var antecedents = ""
+                            element.antecedents.forEach(url => {
+                                antecedents += url + "<br>"
+                            })
+    
+                            var consequents = ""
+                            element.consequents.forEach(url => {
+                                consequents += url + "<br>"
+                            })
+    
+                            self.event_data += `<tr>
+                            <td>${antecedents}</td>
+                            <td>${consequents}</td>
+                            <td>${Math.round(element.confidence*100)}%</td>
+                            </tr>`
+                        })
+
+                        self.noData.event_data = false
+                    }else{
+                        self.noData.event_data = true
+                    }
+                    
                 })
         }
     }
