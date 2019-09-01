@@ -150,7 +150,7 @@ var vue = new Vue({
                     }
                 })
 
-            axios.get(`http://localhost:8000/v1/data/event_apriori_data?event_id=${self.event_id}&support=0.3`)
+            axios.get(`http://localhost:8000/v1/data/event_apriori_data?event_id=${self.event_id}&support=0.034`)
                 .then(response => {
 
                     if(response.data != "No Data"){

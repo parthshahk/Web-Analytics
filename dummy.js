@@ -40,7 +40,7 @@ function randomData(){
     return purs.substr(0, purs.length-1)
 }
 
-for(var i=0; i<1000; i++){
+for(var i=0; i<100; i++){
     
 
     Event.updateOne(

@@ -825,7 +825,7 @@ def event_apriori_data(event_id, support):
 		te_arry = te.fit_transform(item)
 		df2 = pd.DataFrame(te_arry,columns=te.columns_)
 		frq_item = apriori(df2, min_support=support,use_colnames=True)
-		rule = association_rules(frq_item,metric='confidence',min_threshold=0.7)
+		rule = association_rules(frq_item,metric='confidence',min_threshold=0.6)
 
 		return rule.to_json(orient='records')
 		
