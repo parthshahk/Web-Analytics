@@ -63,7 +63,7 @@ var vue = new Vue({
 
         compute_today: function(){
             var date = new Date();
-            date.setDate(date.getDate());
+            date.setDate(date.getDate() +1);
             dateString = `${date.getDay()+1}-${date.getMonth()+1}-${date.getFullYear()}`
             return dateString
         }
