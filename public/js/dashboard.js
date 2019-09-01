@@ -57,14 +57,14 @@ var vue = new Vue({
         compute_start: function(){
             var date = new Date();
             date.setDate(date.getDate() - 100);     // 100 Days
-            var dateString = date.toISOString().split('T')[0];
+            dateString = `${date.getDay()}-${date.getMonth()+1}-${date.getFullYear()}`
             return dateString
         },
 
         compute_today: function(){
             var date = new Date();
             date.setDate(date.getDate());
-            var dateString = date.toISOString().split('T')[0];
+            dateString = `${date.getDay()+1}-${date.getMonth()+1}-${date.getFullYear()}`
             return dateString
         }
     },
