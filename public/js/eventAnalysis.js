@@ -30,13 +30,27 @@ var vue = new Vue({
             time_week: false,
             time_day: false,
             event_data: false
-        }
+        },
+        event_type: "trigger"
     },
 
     mounted: function(){
 
         this.event_id = (window.location.search).substring(4)
-        this.getData()   
+        var self = this
+        axios.get(`/getEvents`)
+            .then(response => {
+                var type 
+                response.data.forEach(element =>{
+                    if(element.id == self.event_id){
+                        type = element.type
+                    }
+                })
+                if(type == "data"){
+                    self.event_type = "data"
+                }
+                this.getData()   
+            })
     },
 
     methods: {
@@ -150,38 +164,41 @@ var vue = new Vue({
                     }
                 })
 
-            axios.get(`http://localhost:8000/v1/data/event_apriori_data?event_id=${self.event_id}&support=0.034`)
-                .then(response => {
+            if(self.event_type == "data"){
 
-                    if(response.data != "No Data"){
-
-                        var data = JSON.parse(response.data)
+                axios.get(`http://localhost:8000/v1/data/event_apriori_data?event_id=${self.event_id}&support=0.034`)
+                    .then(response => {
+    
+                        if(response.data != "No Data"){
+    
+                            var data = JSON.parse(response.data)
+                            
+                            data.forEach(element => {
+        
+                                var antecedents = ""
+                                element.antecedents.forEach(url => {
+                                    antecedents += url + "<br>"
+                                })
+        
+                                var consequents = ""
+                                element.consequents.forEach(url => {
+                                    consequents += url + "<br>"
+                                })
+        
+                                self.event_data += `<tr>
+                                <td>${antecedents}</td>
+                                <td>${consequents}</td>
+                                <td>${Math.round(element.confidence*100)}%</td>
+                                </tr>`
+                            })
+    
+                            self.noData.event_data = false
+                        }else{
+                            self.noData.event_data = true
+                        }
                         
-                        data.forEach(element => {
-    
-                            var antecedents = ""
-                            element.antecedents.forEach(url => {
-                                antecedents += url + "<br>"
-                            })
-    
-                            var consequents = ""
-                            element.consequents.forEach(url => {
-                                consequents += url + "<br>"
-                            })
-    
-                            self.event_data += `<tr>
-                            <td>${antecedents}</td>
-                            <td>${consequents}</td>
-                            <td>${Math.round(element.confidence*100)}%</td>
-                            </tr>`
-                        })
-
-                        self.noData.event_data = false
-                    }else{
-                        self.noData.event_data = true
-                    }
-                    
-                })
+                    })
+            }
         }
     }
 })
