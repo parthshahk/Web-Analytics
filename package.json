@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server",
     "dev": "nodemon server",
-    "api": "hug -f api/server.py"
+    "api": "hug -f api/server.py",
+    "all": "concurrently \"node server\" \"hug -f api/server.py\""
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
   },
   "homepage": "https://github.com/parthshahk/Web-Analytics#readme",
   "devDependencies": {
+    "concurrently": "^4.1.2",
     "nodemon": "^1.19.1"
   },
   "dependencies": {
