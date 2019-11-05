@@ -519,7 +519,7 @@ var vue = new Vue({
                     }
                 })
 
-            axios.get(`http://localhost:8000/v1/data/apriori_href?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}&support=0.1`)
+            axios.get(`http://localhost:8000/v1/data/apriori_href?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}&support=0.05`)
                 .then(response => {
 
                     if(response.data != "No Data"){
@@ -552,7 +552,7 @@ var vue = new Vue({
                     
                 })
 
-            axios.get(`http://localhost:8000/v1/data/apriori_elements?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}&support=0.2`)
+            axios.get(`http://localhost:8000/v1/data/apriori_elements?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}&support=0.12`)
                 .then(response => {
 
                     if(response.data != "No Data"){
