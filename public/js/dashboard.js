@@ -79,8 +79,8 @@ var vue = new Vue({
     computed: {
         compute_start: function(){
             var date = new Date();
-            date.setDate(date.getDate() - 52);     // Number of Days to Go Back
-            dateString = `${date.getDay()}-${date.getMonth()+1}-${date.getFullYear()}`
+            date.setDate(date.getDate() - 150);     // Number of Days to Go Back
+            dateString = `${date.getDay()+1}-${date.getMonth()+1}-${date.getFullYear()}`
             return dateString
         },
 
