@@ -15,6 +15,14 @@ api = hug.API(__name__)
 api.http.add_middleware(hug.middleware.CORSMiddleware(api, max_age=10))
 
 
+col = db.reports
+for obj in col.find():
+    if obj["date"]:
+        if type(obj["date"]) is not datetime:
+            timeFix = datetime.strptime(obj["date"],"%Y-%m-%dT%H:%M:%S")
+            col.update({'_id':obj['_id']},{'$set':{"date" : timeFix}})
+
+
 # Unique Users
 @hug.get('/data/unique_users', versions=1)
 def unique_users(date_start,date_end,asset_id):
