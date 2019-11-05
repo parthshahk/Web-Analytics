@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server",
+    "server": "node server",
     "dev": "nodemon server",
     "api": "hug -f api/server.py",
     "all": "concurrently \"node server\" \"hug -f api/server.py\""

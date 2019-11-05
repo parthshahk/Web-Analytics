@@ -25,6 +25,29 @@ var vue = new Vue({
             '#23AD7B',
             '#65A603',
             '#F40080',
+            '#858F98',
+            '#08415C',
+            '#DB504A',
+            '#FFD166',
+            '#8B5A8C',
+            '#F2A35E',
+            '#F2DC9B',
+            '#26303D',
+            '#23AD7B',
+            '#65A603',
+            '#F40080',
+            '#858F98',
+            '#858F98',
+            '#08415C',
+            '#DB504A',
+            '#FFD166',
+            '#8B5A8C',
+            '#F2A35E',
+            '#F2DC9B',
+            '#26303D',
+            '#23AD7B',
+            '#65A603',
+            '#F40080',
             '#858F98'
         ],
         options: {
@@ -56,14 +79,14 @@ var vue = new Vue({
     computed: {
         compute_start: function(){
             var date = new Date();
-            date.setDate(date.getDate() - 100);     // 100 Days
+            date.setDate(date.getDate() - 52);     // Number of Days to Go Back
             dateString = `${date.getDay()}-${date.getMonth()+1}-${date.getFullYear()}`
             return dateString
         },
 
         compute_today: function(){
             var date = new Date();
-            date.setDate(date.getDate() +1);
+            date.setDate(date.getDate() + 3);
             dateString = `${date.getDay()+1}-${date.getMonth()+1}-${date.getFullYear()}`
             return dateString
         }

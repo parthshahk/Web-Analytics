@@ -19,9 +19,7 @@ api.http.add_middleware(hug.middleware.CORSMiddleware(api, max_age=10))
 @hug.get('/data/unique_users', versions=1)
 def unique_users(date_start,date_end,asset_id):
 	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
 	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
 	data = db.reports
 	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
 	lists = list(lists)
@@ -40,9 +38,7 @@ def unique_users(date_start,date_end,asset_id):
 @hug.get('/data/total_users', versions=1)
 def total_users(date_start,date_end,asset_id):
 	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
 	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
 	data = db.reports
 	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
 	lists = list(lists)
@@ -65,9 +61,7 @@ def total_users(date_start,date_end,asset_id):
 def revisitors(date_start, date_end, asset_id):
 	
 	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
 	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
 	
 	data = db.reports
 	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
@@ -108,9 +102,7 @@ def revisitors(date_start, date_end, asset_id):
 def bounce_rate(date_start, date_end, asset_id):
 
 	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
 	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
 	
 	data = db.reports
 	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
@@ -139,9 +131,7 @@ def bounce_rate(date_start, date_end, asset_id):
 def time_spend(date_start,date_end,asset_id):
 		
 	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
 	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
 	
 	data = db.reports
 	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
@@ -168,9 +158,7 @@ def time_spend(date_start,date_end,asset_id):
 def time_month(date_start, date_end, asset_id):
 
 	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
 	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
 
 	data = db.reports
 	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
@@ -207,9 +195,7 @@ def time_month(date_start, date_end, asset_id):
 @hug.get('/data/time_week', versions=1)
 def time_week(date_start, date_end, asset_id):
 	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
 	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
 	
 	data = db.reports
 	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
@@ -247,9 +233,7 @@ def time_week(date_start, date_end, asset_id):
 def time_day(date_start, date_end, asset_id):
 	
 	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
 	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
 	
 	data = db.reports
 	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
@@ -301,9 +285,7 @@ def time_day(date_start, date_end, asset_id):
 def url_count(date_start, date_end, asset_id):
 	
 	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
 	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
 	
 	data = db.reports
 	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
@@ -330,9 +312,7 @@ def url_count(date_start, date_end, asset_id):
 def element_count(date_start,date_end,asset_id):
 	
 	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
 	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
 	
 	data = db.reports
 	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
@@ -368,9 +348,7 @@ def element_count(date_start,date_end,asset_id):
 def browser(date_start,date_end,asset_id):
 		
 	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
 	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
 	
 	data = db.reports
 	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
@@ -403,9 +381,7 @@ def resolution(date_start,date_end,asset_id):
 	
 	
 	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
 	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
 	
 	data = db.reports
 	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
@@ -438,9 +414,7 @@ def resolution(date_start,date_end,asset_id):
 def os(date_start,date_end,asset_id):		
 		
 	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
 	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
 	
 	data = db.reports
 	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
@@ -472,9 +446,7 @@ def mobile(date_start,date_end,asset_id):
 		
 		
 	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
 	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
 	
 	data = db.reports
 	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
@@ -508,9 +480,7 @@ def time_zone(date_start, date_end, asset_id):
 
 	
 	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
 	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
 	
 	data = db.reports
 	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
@@ -545,9 +515,7 @@ def language(date_start, date_end, asset_id):
 
 	
 	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
 	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
 	
 	data = db.reports
 	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
@@ -582,9 +550,7 @@ def href(date_start, date_end, asset_id,support):
 
 	support = float(support)
 	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
 	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
 	
 	data = db.reports
 	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
@@ -619,9 +585,7 @@ def ele(date_start, date_end, asset_id,support):
 
 	support = float(support)
 	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
 	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
 	
 	data = db.reports
 	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
@@ -775,9 +739,7 @@ def event_time_day(event_id):
 def lost_purchases(date_start,date_end,asset_id):
 		
 	date_start = parser.parse(date_start,dayfirst=True)
-	date_start = date_start.isoformat().replace("-0", "-")
 	date_end = parser.parse(date_end,dayfirst=True)
-	date_end = date_end.isoformat().replace("-0", "-")
 	
 	data = db.reports
 	lists = data.find({'date': {'$gt': date_start,'$lt':date_end}, 'assetId': asset_id})
