@@ -17,6 +17,15 @@ module.exports = function(app){
         }
     });
 
+    // Geo Frame
+    app.get("/geolocation", (req, res) => {
+        if(req.session.auth == true){
+            res.sendFile(path.join(config.dirname, 'public', 'geolocation.html'));
+        }else{
+            res.redirect("/");
+        }
+    });
+
     // Assets
     app.get("/assets", (req, res) => {
         if(req.session.auth == true){

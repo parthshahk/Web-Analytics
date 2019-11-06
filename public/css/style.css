@@ -21,3 +21,16 @@
     margin-top: 40px;
     border-right: 1px dotted #33691e;
 }
+
+#geolocation{
+    width: 100%;
+    height: 400px;
+}
+
+.geolocation{
+    height: 420px;
+}
+
+iframe{
+    width: 100%;
+}
