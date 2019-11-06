@@ -13,6 +13,8 @@ var vue = new Vue({
         browser: "",
         resolution: "",
         apriori_href: "",
+        support_url: 0.05,
+        support_components: 0.12,
         apriori_elements: "",
         colors: [
             '#08415C',
@@ -519,7 +521,7 @@ var vue = new Vue({
                     }
                 })
 
-            axios.get(`http://localhost:8000/v1/data/apriori_href?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}&support=0.05`)
+            axios.get(`http://localhost:8000/v1/data/apriori_href?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}&support=${self.support_url}`)
                 .then(response => {
 
                     if(response.data != "No Data"){
@@ -552,7 +554,87 @@ var vue = new Vue({
                     
                 })
 
-            axios.get(`http://localhost:8000/v1/data/apriori_elements?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}&support=0.12`)
+            axios.get(`http://localhost:8000/v1/data/apriori_elements?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}&support=${self.support_components}`)
+                .then(response => {
+
+                    if(response.data != "No Data"){
+
+                        var data = JSON.parse(response.data)
+                        
+                        data.forEach(element => {
+    
+                            var antecedents = ""
+                            element.antecedents.forEach(url => {
+                                antecedents += url + "<br>"
+                            })
+    
+                            var consequents = ""
+                            element.consequents.forEach(url => {
+                                consequents += url + "<br>"
+                            })
+    
+                            self.apriori_elements += `<tr>
+                            <td>${antecedents}</td>
+                            <td>${consequents}</td>
+                            <td>${Math.round(element.confidence*100)}%</td>
+                            </tr>`
+                        })
+
+                        self.noData.assoc_components = false
+                    }else{
+                        self.noData.assoc_components = true
+                    }
+                    
+                })
+        },
+
+        updateUrlAppriori: function(){
+            
+            var self = this
+
+            self.apriori_href = ""
+
+            axios.get(`http://localhost:8000/v1/data/apriori_href?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}&support=${self.support_url}`)
+                .then(response => {
+
+                    if(response.data != "No Data"){
+
+                        var data = JSON.parse(response.data)
+                        
+                        data.forEach(element => {
+    
+                            var antecedents = ""
+                            element.antecedents.forEach(url => {
+                                antecedents += url + "<br>"
+                            })
+    
+                            var consequents = ""
+                            element.consequents.forEach(url => {
+                                consequents += url + "<br>"
+                            })
+    
+                            self.apriori_href += `<tr>
+                            <td>${antecedents}</td>
+                            <td>${consequents}</td>
+                            <td>${Math.round(element.confidence*100)}%</td>
+                            </tr>`
+                        })
+
+                        self.noData.assoc_url = false
+                    }else{
+                        self.noData.assoc_url = true
+                    }
+                    
+                })
+        },
+
+        updateComponentsAppriori: function(){
+            
+            var self = this
+
+            self.apriori_elements = ""
+
+            axios.get(`http://localhost:8000/v1/data/apriori_elements?date_start=${self.compute_start}&date_end=${self.compute_today}&asset_id=${self.asset_id}&support=${self.support_components}`)
                 .then(response => {
 
                     if(response.data != "No Data"){
